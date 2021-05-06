@@ -117,6 +117,8 @@ std::shared_ptr<p18::response_type::BaseResponse> Server::executeCommand(p18::Co
         if (voltronic::timestamp() - cr.time <= cacheTimeout_) {
             return cr.response;
         }
+
+        cache_.erase(it);
     }
 
     try {
