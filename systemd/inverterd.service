@@ -1,0 +1,10 @@
+[Unit]
+Description=inverterd
+After=network.target
+
+[Service]
+Restart=on-failure
+ExecStart=/usr/local/bin/inverterd --host 0.0.0.0
+
+[Install]
+WantedBy=multi-user.target
