@@ -33,6 +33,11 @@ As the time of writing, only InfiniSolar V 5KW was tested.
 Please use the `--help` option for now. The help message has full description
 for all possible options and commands.
 
+## Related projects
+
+- [inverterd-client](https://github.com/gch1p/inverterd-client) - a Python
+  library for querying inverterd server. 
+
 ## License
 
 BSD-3-Clause
