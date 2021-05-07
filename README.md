@@ -21,7 +21,7 @@ is planned.
 
 ## Supported devices
 
-As the time of writing, only InfiniSolar V 5KW was tested.
+As of time of writing, only InfiniSolar V 5KW was tested.
 
 ## Supported interfaces
 
