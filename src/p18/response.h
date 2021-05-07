@@ -82,9 +82,29 @@ public:
 
     inline json toJSON() const {
         json j;
-        std::visit([&j](const auto& elem) {
-            j = elem;
+        bool isEnum =
+            std::holds_alternative<p18::BatteryType>(v_) ||
+            std::holds_alternative<p18::BatteryPowerDirection>(v_) ||
+            std::holds_alternative<p18::ChargerSourcePriority>(v_) ||
+            std::holds_alternative<p18::DC_AC_PowerDirection>(v_) ||
+            std::holds_alternative<p18::InputVoltageRange>(v_) ||
+            std::holds_alternative<p18::LinePowerDirection>(v_) ||
+            std::holds_alternative<p18::MachineType>(v_) ||
+            std::holds_alternative<p18::MPPTChargerStatus>(v_) ||
+            std::holds_alternative<p18::Topology>(v_) ||
+            std::holds_alternative<p18::OutputSourcePriority>(v_) ||
+            std::holds_alternative<p18::OutputModelSetting>(v_) ||
+            std::holds_alternative<p18::ParallelConnectionStatus>(v_) ||
+            std::holds_alternative<p18::SolarPowerPriority>(v_) ||
+            std::holds_alternative<p18::WorkingMode>(v_);
+
+        std::visit([&j, &isEnum](const auto& elem) {
+            if (isEnum)
+                j = formatter::to_str(elem);
+            else
+                j = elem;
         }, v_);
+
         return j;
     }
 };
