@@ -197,7 +197,7 @@ public:
     void unpack() override;
     formattable_ptr format(formatter::Format format) override;
 
-    unsigned long kwh = 0;
+    unsigned long wh = 0;
 };
 
 class YearGenerated : public TotalGenerated {

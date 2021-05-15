@@ -190,12 +190,12 @@ void TotalGenerated::unpack() {
     auto data = getData();
 
     std::string buf(data, 8);
-    kwh = stou(buf);
+    wh = stou(buf);
 }
 
 formattable_ptr TotalGenerated::format(formatter::Format format) {
     RETURN_TABLE({
-        LINE("kwh", "KWh", kwh)
+        LINE("wh", "Wh", wh)
     });
 }
 
