@@ -28,6 +28,7 @@ class Connection;
 
 struct CachedResponse {
     u64 time;
+    std::vector<std::string> arguments;
     std::shared_ptr<p18::response_type::BaseResponse> response;
 };
 

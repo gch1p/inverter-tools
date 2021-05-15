@@ -114,7 +114,7 @@ std::shared_ptr<p18::response_type::BaseResponse> Server::executeCommand(p18::Co
     auto it = cache_.find(commandType);
     if (it != cache_.end()) {
         auto cr = it->second;
-        if (voltronic::timestamp() - cr.time <= cacheTimeout_) {
+        if (voltronic::timestamp() - cr.time <= cacheTimeout_ && arguments == cr.arguments) {
             return cr.response;
         }
 
@@ -123,7 +123,11 @@ std::shared_ptr<p18::response_type::BaseResponse> Server::executeCommand(p18::Co
 
     try {
         auto response = client_.execute(commandType, arguments);
-        CachedResponse cr{voltronic::timestamp(), response};
+        CachedResponse cr {
+            .time = voltronic::timestamp(),
+            .arguments = arguments,
+            .response = response
+        };
         cache_[commandType] = cr;
         return response;
     }
@@ -140,6 +144,5 @@ std::shared_ptr<p18::response_type::BaseResponse> Server::executeCommand(p18::Co
         throw std::runtime_error("response is invalid: " + std::string(e.what()));
     }
 }
-
 
 }
