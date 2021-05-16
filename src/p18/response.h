@@ -107,6 +107,14 @@ public:
 
         return j;
     }
+
+    inline json toSimpleJSON() const {
+        json j;
+        std::visit([&j](const auto& elem) {
+            j = elem;
+        }, v_);
+        return j;
+    }
 };
 
 

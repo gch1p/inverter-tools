@@ -38,6 +38,7 @@ enum class Format {
     Table,
     SimpleTable,
     JSON,
+    SimpleJSON,
 };
 std::ostream& operator<<(std::ostream& os, Unit val);
 
@@ -92,6 +93,7 @@ public:
     virtual ~Formattable() = default;
 
     virtual std::ostream& writeJSON(std::ostream& os) const = 0;
+    virtual std::ostream& writeSimpleJSON(std::ostream& os) const = 0;
     virtual std::ostream& writeTable(std::ostream& os) const = 0;
     virtual std::ostream& writeSimpleTable(std::ostream& os) const = 0;
 
@@ -105,6 +107,9 @@ public:
 
             case Format::JSON:
                 return ref.writeJSON(os);
+
+            case Format::SimpleJSON:
+                return ref.writeSimpleJSON(os);
         }
 
         return os;
@@ -112,7 +117,7 @@ public:
 };
 
 
-// T must have `operator<<` and `basic_json toJSON()` methods
+// T must have `operator<<`, `json toJSON()` and `json toSimpleJSON()` methods
 template <typename T>
 class Table : public Formattable {
 protected:
@@ -184,6 +189,17 @@ public:
         }
         return os << j.dump();
     }
+
+    std::ostream& writeSimpleJSON(std::ostream& os) const override {
+        ordered_json j = {
+            {"result", "ok"},
+            {"data", {}}
+        };
+        for (const auto &item: v_) {
+            j["data"][item.key] = item.value.toSimpleJSON();
+        }
+        return os << j.dump();
+    }
 };
 
 template <typename T>
@@ -220,6 +236,19 @@ public:
 
         return os << j.dump();
     }
+
+    std::ostream& writeSimpleJSON(std::ostream& os) const override {
+        json data = {};
+        ordered_json j;
+
+        j["result"] = "ok";
+
+        for (const auto &item: v_)
+            data.push_back(item.value.toSimpleJSON());
+        j["data"] = data;
+
+        return os << j.dump();
+    }
 };
 
 class Status : public Formattable {
@@ -249,6 +278,10 @@ public:
         if (!message_.empty())
             j["message"] = message_;
         return os << j.dump();
+    }
+
+    std::ostream& writeSimpleJSON(std::ostream& os) const override {
+        return writeJSON(os);
     }
 };
 

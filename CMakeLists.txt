@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.0)
 set(CMAKE_CXX_STANDARD 17)
 add_compile_options(-Wno-psabi)
 
-project(inverter-tools VERSION 1.0.2)
+project(inverter-tools VERSION 1.0.3)
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX /usr/local/bin)

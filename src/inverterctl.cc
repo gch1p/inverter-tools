@@ -45,7 +45,8 @@ static void short_usage(const char* progname) {
         "    --device <DEVICE>:   'usb' (default), 'serial' or 'pseudo'\n"
         "    --timeout <TIMEOUT>: Timeout in ms (default: " << voltronic::Device::TIMEOUT << ")\n"
         "    --verbose:           Be verbose\n"
-        "    --format <FORMAT>:   'table' (default), 'simple-table' or 'json'\n"
+        "    --format <FORMAT>:   'table' (default), 'simple-table', 'json' or\n"
+        "                         'simple-json'\n"
         "\n"
         "To see list of supported commands, use --help.\n";
     exit(1);
@@ -206,7 +207,8 @@ static void usage(const char* progname) {
            "Formats:\n"
            "    table         Human-readable table\n"
            "    simple-table  Conveniently-parsable table\n"
-           "    json          JSON object or array\n";
+           "    json          JSON object or array\n"
+           "    simple-json   no units, enumerations represented as numbers\n";
 
     exit(1);
 }

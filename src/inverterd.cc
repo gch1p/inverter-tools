@@ -243,21 +243,6 @@ int main(int argc, char *argv[]) {
         }
 
         dev->setTimeout(timeout);
-
-//        p18::Client client;
-//        client.setDevice(dev);
-
-        /*if (action == Action::Raw) {
-            auto result = client.runOnDevice(raw);
-            if (verbose)
-                std::cerr << hexdump(result.first.get(), result.second);
-            std::cout << std::string(result.first.get(), result.second) << std::endl;
-        } else {
-            auto response = client.execute(commandType, arguments);
-            std::cout << *(response->format(format).get()) << std::endl;
-        }*/
-
-//        success = true;
     }
     catch (voltronic::DeviceError& e) {
         myerr << "device error: " << e.what();

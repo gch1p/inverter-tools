@@ -6,6 +6,8 @@
 formatter::Format format_from_string(std::string& s) {
     if (s == "json")
         return formatter::Format::JSON;
+    else if (s == "simple-json")
+        return formatter::Format::SimpleJSON;
     else if (s == "table")
         return formatter::Format::Table;
     else if (s == "simple-table")
