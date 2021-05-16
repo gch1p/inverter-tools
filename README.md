@@ -37,7 +37,6 @@ for all possible options and commands.
 
 - [inverterd-client](https://github.com/gch1p/inverterd-client) - a Python library
   for querying inverterd server.
-  
 - [inverter-bot](https://github.com/gch1p/inverter-bot) - Telegram bot that uses inverterd
   for querying data.
 
