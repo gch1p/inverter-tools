@@ -43,7 +43,9 @@ typedef std::variant<
     p18::OutputModelSetting,
     p18::ParallelConnectionStatus,
     p18::SolarPowerPriority,
-    p18::WorkingMode
+    p18::WorkingMode,
+    p18::LoadConnectionStatus,
+    p18::ConfigurationStatus
 > Variant;
 
 class VariantHolder {
@@ -72,6 +74,8 @@ public:
     VariantHolder(p18::ParallelConnectionStatus v) : v_(v) {}
     VariantHolder(p18::SolarPowerPriority v) : v_(v) {}
     VariantHolder(p18::WorkingMode v) : v_(v) {}
+    VariantHolder(p18::LoadConnectionStatus v) : v_(v) {}
+    VariantHolder(p18::ConfigurationStatus v) : v_(v) {}
 
     friend std::ostream &operator<<(std::ostream &os, VariantHolder const& ref) {
         std::visit([&os](const auto& elem) {
@@ -96,7 +100,9 @@ public:
             std::holds_alternative<p18::OutputModelSetting>(v_) ||
             std::holds_alternative<p18::ParallelConnectionStatus>(v_) ||
             std::holds_alternative<p18::SolarPowerPriority>(v_) ||
-            std::holds_alternative<p18::WorkingMode>(v_);
+            std::holds_alternative<p18::WorkingMode>(v_) ||
+            std::holds_alternative<p18::LoadConnectionStatus>(v_) ||
+            std::holds_alternative<p18::ConfigurationStatus>(v_);
 
         std::visit([&j, &isEnum](const auto& elem) {
             if (isEnum)
@@ -302,14 +308,10 @@ public:
     unsigned pv2_input_power;           /* unit: W */
     unsigned pv1_input_voltage;         /* unit: 0.1V */
     unsigned pv2_input_voltage;         /* unit: 0.1V */
-    bool settings_values_changed;           /* inverter returns:
-                                               0: nothing changed
-                                               1: something changed */
+    p18::ConfigurationStatus configuration_status;
     p18::MPPTChargerStatus mppt1_charger_status;
     p18::MPPTChargerStatus mppt2_charger_status;
-    bool load_connected;                    /* inverter returns:
-                                               0: disconnected
-                                               1: connected */
+    p18::LoadConnectionStatus load_connected;
     p18::BatteryPowerDirection battery_power_direction;
     p18::DC_AC_PowerDirection dc_ac_power_direction;
     p18::LinePowerDirection line_power_direction;
@@ -458,9 +460,7 @@ public:
     unsigned pv2_input_voltage;              /* unit: 0.1V */
     p18::MPPTChargerStatus mppt1_charger_status;
     p18::MPPTChargerStatus mppt2_charger_status;
-    bool load_connected;                         /* inverter returns:
-                                                    0: disconnected
-                                                    1: connected */
+    p18::LoadConnectionStatus load_connected;
     p18::BatteryPowerDirection battery_power_direction;
     p18::DC_AC_PowerDirection dc_ac_power_direction;
     p18::LinePowerDirection line_power_direction;

@@ -151,6 +151,18 @@ enum class ParallelConnectionStatus {
 };
 ENUM_STR(ParallelConnectionStatus);
 
+enum class LoadConnectionStatus {
+    Disconnected = 0,
+    Connected    = 1,
+};
+ENUM_STR(LoadConnectionStatus);
+
+enum class ConfigurationStatus {
+    Default = 0,
+    Changed = 1,
+};
+ENUM_STR(ConfigurationStatus);
+
 struct Flag {
     std::string flag;
     char letter;

@@ -372,10 +372,10 @@ void GeneralStatus::unpack() {
     pv2_input_power = stou(list[17]);
     pv1_input_voltage = stou(list[18]);
     pv2_input_voltage = stou(list[19]);
-    settings_values_changed = list[20] == "1";
+    configuration_status = static_cast<ConfigurationStatus>(stou(list[20]));
     mppt1_charger_status = static_cast<MPPTChargerStatus>(stou(list[21]));
     mppt2_charger_status = static_cast<MPPTChargerStatus>(stou(list[22]));
-    load_connected = list[23] == "1";
+    load_connected = static_cast<LoadConnectionStatus>(stou(list[23]));
     battery_power_direction = static_cast<BatteryPowerDirection>(stou(list[24]));
     dc_ac_power_direction = static_cast<DC_AC_PowerDirection>(stou(list[25]));
     line_power_direction = static_cast<LinePowerDirection>(stou(list[26]));
@@ -404,10 +404,10 @@ formattable_ptr GeneralStatus::format(formatter::Format format) {
         LINE("pv2_input_power", "PV2 input power", pv2_input_power, Unit::Wh),
         LINE("pv1_input_voltage", "PV1 input voltage", pv1_input_voltage / 10.0, Unit::V),
         LINE("pv2_input_voltage", "PV2 input voltage", pv2_input_voltage / 10.0, Unit::V),
-        LINE("settings_values_changed", "Configuration state", std::string(settings_values_changed ? "Default" : "Custom")),
+        LINE("configuration_status", "Configuration state", configuration_status),
         LINE("mppt1_charger_status", "MPPT1 charger status", mppt1_charger_status),
         LINE("mppt2_charger_status", "MPPT2 charger status", mppt2_charger_status),
-        LINE("load_connected", "Load connection", std::string(load_connected ? "Connected" : "Disconnected")),
+        LINE("load_connected", "Load connection", load_connected),
         LINE("battery_power_direction", "Battery power direction", battery_power_direction),
         LINE("dc_ac_power_direction", "DC/AC power direction", dc_ac_power_direction),
         LINE("line_power_direction", "LINE power direction", line_power_direction),
@@ -714,7 +714,7 @@ void ParallelGeneralStatus::unpack() {
     pv2_input_voltage = stou(list[21]);
     mppt1_charger_status = static_cast<MPPTChargerStatus>(stou(list[22]));
     mppt2_charger_status = static_cast<MPPTChargerStatus>(stou(list[23]));
-    load_connected = stou(list[24]);
+    load_connected = static_cast<LoadConnectionStatus>(stou(list[24]));
     battery_power_direction = static_cast<BatteryPowerDirection>(stou(list[25]));
     dc_ac_power_direction = static_cast<DC_AC_PowerDirection>(stou(list[26]));
     line_power_direction = static_cast<LinePowerDirection>(stou(list[27]));
@@ -745,7 +745,7 @@ formattable_ptr ParallelGeneralStatus::format(formatter::Format format) {
         LINE("pv2_input_voltage", "PV2 Input voltage", pv2_input_voltage / 10.0, Unit::V),
         LINE("mppt1_charger_status", "MPPT1 charger status", mppt1_charger_status),
         LINE("mppt2_charger_status", "MPPT2 charger status", mppt2_charger_status),
-        LINE("load_connected", "Load connection", std::string(load_connected ? "Connected" : "Disconnected")),
+        LINE("load_connected", "Load connection", load_connected),
         LINE("battery_power_direction", "Battery power direction", battery_power_direction),
         LINE("dc_ac_power_direction", "DC/AC power direction", dc_ac_power_direction),
         LINE("line_power_direction", "Line power direction", line_power_direction),

@@ -243,4 +243,20 @@ ENUM_STR(ParallelConnectionStatus) {
     ENUM_STR_DEFAULT;
 }
 
+ENUM_STR(LoadConnectionStatus) {
+    switch (val) {
+        case LoadConnectionStatus::Disconnected: return os << "Disconnected";
+        case LoadConnectionStatus::Connected:    return os << "Connected";
+    }
+    ENUM_STR_DEFAULT;
+}
+
+ENUM_STR(ConfigurationStatus) {
+    switch (val) {
+        case ConfigurationStatus::Default: return os << "Default";
+        case ConfigurationStatus::Changed: return os << "Changed";
+    }
+    ENUM_STR_DEFAULT;
+}
+
 }
