@@ -28,7 +28,7 @@ static void usage(const char* progname) {
               "    --port <PORT>        Server port (default: " << DEFAULT_PORT << ")\n"
               "    --device <DEVICE>:   'usb' (default), 'serial' or 'pseudo'\n"
               "    --timeout <TIMEOUT>: Device timeout in ms (default: " << voltronic::Device::TIMEOUT << ")\n"
-              "    --cache-timeout <TIMEOUT>"
+              "    --cache-timeout <TIMEOUT>\n"
               "                         Cache validity time, in ms (default: " << server::Server::CACHE_TIMEOUT << ")\n"
               "    --verbose:           Be verbose\n"
               "\n";
