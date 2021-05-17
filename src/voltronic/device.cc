@@ -33,7 +33,6 @@ void Device::setVerbose(bool verbose) {
 
 void Device::setTimeout(u64 timeout) {
     timeout_ = timeout;
-    timeStarted_ = timestamp();
 }
 
 u64 Device::getElapsedTime() const {
@@ -44,10 +43,16 @@ u64 Device::getTimeLeft() const {
     if (!timeout_)
         return std::numeric_limits<uint64_t>::max();
 
-    return std::max((u64)0, timeout_ - getElapsedTime());
+    u64 elapsed = getElapsedTime();
+    if (elapsed > timeout_)
+        return 0;
+
+    return timeout_ - elapsed;
 }
 
 size_t Device::run(const u8* inbuf, size_t inbufSize, u8* outbuf, size_t outbufSize) {
+    timeStarted_ = timestamp();
+
     send(inbuf, inbufSize);
 
     if (!getTimeLeft())
