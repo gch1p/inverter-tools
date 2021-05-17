@@ -29,3 +29,7 @@ Each response is represented by one or more lines, each ending with `\r\n`, plus
 extra `\r\n` in the end.
 
 First line is always a status, which may be either `ok` or `err`.
+
+## Usage example
+
+![inverterd-telnet](inverterd-telnet.gif)
