@@ -6,10 +6,11 @@ is planned.
 
 - `inverterctl` is a full-featured command line utility with all P18 commands
   supported.
-  
-- `inverterd` is a daemon that starts TCP server that accepts user requests. It 
-  replaces inverterctl for multi-user scenarios, where there may be more than one
-  simultaneous request to device, to avoid errors or lockups. 
+- `inverterd` is a daemon that starts a TCP server and implements simple text-based
+  telnet-compatible chat [protocol](PROTOCOL.md). It supports all commands and options
+  supported by inverterctl, and it's supposed to be used instead of interterctl in
+  multi-user or multi-threaded scenarios, where there may be more than one simultaneous
+  request to device, to avoid errors or device lockups.
 
 ## Requirements
 
