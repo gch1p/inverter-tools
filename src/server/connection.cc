@@ -233,6 +233,8 @@ Response Connection::processRequest(char* buf) {
     }
     // we except std::invalid_argument and std::runtime_error
     catch (std::exception& e) {
+        myerr << e.what();
+
         resp.type = ResponseType::Error;
 
         auto err = p18::response_type::ErrorResponse(e.what());
