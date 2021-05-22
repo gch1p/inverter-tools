@@ -436,11 +436,13 @@ p18::CommandType validate_input(std::string& command,
         if (endHour > 23 || endMinute > 59)
             throw std::invalid_argument("invalid end time");
 
-        arguments[0] = std::to_string(startHour);
-        arguments[1] = std::to_string(startMinute);
+        arguments.clear();
 
-        arguments[2] = std::to_string(endHour);
-        arguments[3] = std::to_string(endMinute);
+        arguments.emplace_back(std::to_string(startHour));
+        arguments.emplace_back(std::to_string(startMinute));
+
+        arguments.emplace_back(std::to_string(endHour));
+        arguments.emplace_back(std::to_string(endMinute));
 
         break;
     }
