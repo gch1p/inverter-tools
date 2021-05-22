@@ -55,8 +55,13 @@ size_t Device::run(const u8* inbuf, size_t inbufSize, u8* outbuf, size_t outbufS
 
     send(inbuf, inbufSize);
 
-    if (!getTimeLeft())
+    if (!getTimeLeft()) {
+        // FIXME
+        // we should read incoming data from the device,
+        // or clean the buffer in some other way.
+        // otherwise we may get invalid response next time
         throw TimeoutError("sending already took " + std::to_string(getElapsedTime()) + " ms");
+    }
 
     return recv(outbuf, outbufSize);
 }
