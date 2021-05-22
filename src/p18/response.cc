@@ -410,7 +410,7 @@ formattable_ptr GeneralStatus::format(formatter::Format format) {
         LINE("load_connected", "Load connection", load_connected),
         LINE("battery_power_direction", "Battery power direction", battery_power_direction),
         LINE("dc_ac_power_direction", "DC/AC power direction", dc_ac_power_direction),
-        LINE("line_power_direction", "LINE power direction", line_power_direction),
+        LINE("line_power_direction", "Line power direction", line_power_direction),
         LINE("local_parallel_id", "Local parallel ID", local_parallel_id),
     });
 }
