@@ -207,8 +207,10 @@ Response Connection::processRequest(char* buf) {
                 CHECK_ARGUMENTS_MIN_LENGTH(1)
 
                 std::string& command = arguments[0];
-                auto commandArguments = std::vector<std::string>();
+                if (server_->verbose())
+                    mylog << "received " << command << " command";
 
+                auto commandArguments = std::vector<std::string>();
                 auto argumentsSlice = std::vector<std::string>(arguments.begin()+1, arguments.end());
 
                 p18::CommandInput input{&argumentsSlice};
