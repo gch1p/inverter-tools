@@ -44,6 +44,8 @@ private:
     u64 cacheTimeout_;
     u64 delay_;
     u64 endExecutionTime_;
+    u32 deviceErrorLimit_;
+    u32 deviceErrorCounter_;
     std::map<p18::CommandType, CachedResponse> cache_;
 
     std::mutex threads_mutex_;
@@ -53,6 +55,8 @@ private:
 
 public:
     static const u64 CACHE_TIMEOUT = 1000;
+    static const u32 DEVICE_ERROR_LIMIT = 10;
+    static const u64 DELAY = 0;
 
     volatile std::atomic<bool> sigCaught = 0;
 
@@ -62,6 +66,8 @@ public:
     void setVerbose(bool verbose);
     void setCacheTimeout(u64 timeout);
     void setDelay(u64 delay);
+    void setDeviceErrorLimit(u32 deviceErrorLimit);
+
     void start(std::string& host, int port);
 
     bool verbose() const { return verbose_; }

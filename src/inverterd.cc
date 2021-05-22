@@ -30,8 +30,11 @@ static void usage(const char* progname) {
               "    --device <DEVICE>:   'usb' (default), 'serial' or 'pseudo'\n"
               "    --timeout <TIMEOUT>: Device timeout in ms (default: " << voltronic::Device::TIMEOUT << ")\n"
               "    --cache-timeout <TIMEOUT>\n"
-              "    --delay <DELAY>:     Delay between commands in ms (default: 0)\n"
+              "                         Default: " << server::Server::CACHE_TIMEOUT << "\n"
+              "    --delay <DELAY>:     Delay between commands in ms (default: " << server::Server::DELAY << ")\n"
               "                         Cache validity time, in ms (default: " << server::Server::CACHE_TIMEOUT << ")\n"
+              "    --device-error-limit <LIMIT>\n"
+              "                         Default: " << server::Server::DEVICE_ERROR_LIMIT << "\n"
               "    --verbose:           Be verbose\n"
               "\n";
 
@@ -57,7 +60,8 @@ int main(int argc, char *argv[]) {
     // common params
     u64 timeout = voltronic::Device::TIMEOUT;
     u64 cacheTimeout = server::Server::CACHE_TIMEOUT;
-    u64 delay = 0;
+    u64 delay = server::Server::DELAY;
+    u32 deviceErrorLimit = server::Server::DEVICE_ERROR_LIMIT;
     bool verbose = false;
 
     // server params
@@ -79,22 +83,23 @@ int main(int argc, char *argv[]) {
     try {
         int opt;
         struct option long_options[] = {
-            {"help",    no_argument,       nullptr, 'h'},
-            {"verbose", no_argument,       nullptr, LO_VERBOSE},
-            {"timeout",          required_argument, nullptr, LO_TIMEOUT},
-            {"cache-timeout",    required_argument, nullptr, LO_CACHE_TIMEOUT},
-            {"delay",            required_argument, nullptr, LO_DELAY},
-            {"device",           required_argument, nullptr, LO_DEVICE},
-            {"usb-vendor-id",    required_argument, nullptr, LO_USB_VENDOR_ID},
-            {"usb-device-id",    required_argument, nullptr, LO_USB_DEVICE_ID},
-            {"serial-name",      required_argument, nullptr, LO_SERIAL_NAME},
-            {"serial-baud-rate", required_argument, nullptr, LO_SERIAL_BAUD_RATE},
-            {"serial-data-bits", required_argument, nullptr, LO_SERIAL_DATA_BITS},
-            {"serial-stop-bits", required_argument, nullptr, LO_SERIAL_STOP_BITS},
-            {"serial-parity",    required_argument, nullptr, LO_SERIAL_PARITY},
-            {"host",             required_argument, nullptr, LO_HOST},
-            {"port",             required_argument, nullptr, LO_PORT},
-            {nullptr, 0, nullptr, 0}
+            {"help",    no_argument,       nullptr,            'h'},
+            {"verbose", no_argument,       nullptr,            LO_VERBOSE},
+            {"timeout",            required_argument, nullptr, LO_TIMEOUT},
+            {"cache-timeout",      required_argument, nullptr, LO_CACHE_TIMEOUT},
+            {"delay",              required_argument, nullptr, LO_DELAY},
+            {"device",             required_argument, nullptr, LO_DEVICE},
+            {"device-error-limit", required_argument, nullptr, LO_DEVICE_ERROR_LIMIT},
+            {"usb-vendor-id",      required_argument, nullptr, LO_USB_VENDOR_ID},
+            {"usb-device-id",      required_argument, nullptr, LO_USB_DEVICE_ID},
+            {"serial-name",        required_argument, nullptr, LO_SERIAL_NAME},
+            {"serial-baud-rate",   required_argument, nullptr, LO_SERIAL_BAUD_RATE},
+            {"serial-data-bits",   required_argument, nullptr, LO_SERIAL_DATA_BITS},
+            {"serial-stop-bits",   required_argument, nullptr, LO_SERIAL_STOP_BITS},
+            {"serial-parity",      required_argument, nullptr, LO_SERIAL_PARITY},
+            {"host",               required_argument, nullptr, LO_HOST},
+            {"port",               required_argument, nullptr, LO_PORT},
+            {nullptr, 0, nullptr,                              0}
         };
 
         bool getoptError = false; // FIXME
@@ -145,6 +150,10 @@ int main(int argc, char *argv[]) {
 
                 case LO_DELAY:
                     delay = std::stoull(arg);
+                    break;
+
+                case LO_DEVICE_ERROR_LIMIT:
+                    deviceErrorLimit = static_cast<u32>(std::stoul(arg));
                     break;
 
                 case LO_USB_VENDOR_ID:
@@ -275,6 +284,7 @@ int main(int argc, char *argv[]) {
     server::Server server(dev);
     server.setVerbose(verbose);
     server.setDelay(delay);
+    server.setDeviceErrorLimit(deviceErrorLimit);
     server.setCacheTimeout(cacheTimeout);
 
     server.start(host, port);

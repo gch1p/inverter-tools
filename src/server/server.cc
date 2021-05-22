@@ -25,8 +25,10 @@ Server::Server(std::shared_ptr<voltronic::Device> device)
     : sock_(0)
     , port_(0)
     , cacheTimeout_(CACHE_TIMEOUT)
-    , delay_(0)
+    , delay_(DELAY)
     , endExecutionTime_(0)
+    , deviceErrorLimit_(DEVICE_ERROR_LIMIT)
+    , deviceErrorCounter_(0)
     , verbose_(false)
     , device_(std::move(device)) {
     client_.setDevice(device_);
@@ -43,6 +45,10 @@ void Server::setCacheTimeout(u64 timeout) {
 
 void Server::setDelay(u64 delay) {
     delay_ = delay;
+}
+
+void Server::setDeviceErrorLimit(u32 deviceErrorLimit) {
+    deviceErrorLimit_ = deviceErrorLimit;
 }
 
 Server::~Server() {
@@ -146,9 +152,13 @@ std::shared_ptr<p18::response_type::BaseResponse> Server::executeCommand(p18::Co
         };
         cache_[commandType] = cr;
 
+        deviceErrorCounter_ = 0;
         return response;
     }
     catch (voltronic::DeviceError& e) {
+        deviceErrorCounter_++;
+        if (!shutdownCaught && deviceErrorCounter_ >= deviceErrorLimit_)
+            shutdownCaught = true;
         throw std::runtime_error("device error: " + std::string(e.what()));
     }
     catch (voltronic::TimeoutError& e) {
