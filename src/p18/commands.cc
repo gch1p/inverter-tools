@@ -378,7 +378,7 @@ p18::CommandType validate_input(std::string& command,
             throw std::invalid_argument("invalid id");
 
         std::array<std::string, 5> allowed({"SM", "P", "P1", "P2", "P3"});
-        long index = index_of(allowed, arguments[0]);
+        long index = index_of(allowed, arguments[1]);
         if (index == -1)
             throw std::invalid_argument("invalid model");
         arguments[1] = std::to_string(index);
