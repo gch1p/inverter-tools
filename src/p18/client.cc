@@ -202,7 +202,7 @@ std::string Client::packArguments(p18::CommandType commandType, std::vector<std:
 
         case CommandType::SetDateTime: {
             for (int i = 0; i < 6; i++) {
-                int val = std::stoi(arguments[0]);
+                int val = std::stoi(arguments[i]);
                 if (i == 0)
                     val -= 2000;
                 buf << std::setw(2) << val;
