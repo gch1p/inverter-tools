@@ -328,7 +328,7 @@ p18::CommandType validate_input(std::string& command,
             throw std::invalid_argument("invalid id");
 
         std::array<std::string, 3> priorities({"SF", "SU", "S"});
-        long index = index_of(priorities, arguments[0]);
+        long index = index_of(priorities, arguments[1]);
         if (index == -1)
             throw std::invalid_argument("invalid argument");
 
