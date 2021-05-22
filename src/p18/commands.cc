@@ -307,13 +307,13 @@ p18::CommandType validate_input(std::string& command,
         float cv = std::stof(arguments[0]);
         float dv = std::stof(arguments[1]);
 
-        if (index_of(p18::bat_ac_recharging_voltages_12v, cv) == -1 ||
-            index_of(p18::bat_ac_recharging_voltages_24v, cv) == -1 ||
+        if (index_of(p18::bat_ac_recharging_voltages_12v, cv) == -1 &&
+            index_of(p18::bat_ac_recharging_voltages_24v, cv) == -1 &&
             index_of(p18::bat_ac_recharging_voltages_48v, cv) == -1)
             throw std::invalid_argument("invalid CV");
 
-        if (index_of(p18::bat_ac_redischarging_voltages_12v, dv) == -1 ||
-            index_of(p18::bat_ac_redischarging_voltages_24v, dv) == -1 ||
+        if (index_of(p18::bat_ac_redischarging_voltages_12v, dv) == -1 &&
+            index_of(p18::bat_ac_redischarging_voltages_24v, dv) == -1 &&
             index_of(p18::bat_ac_redischarging_voltages_48v, dv) == -1)
             throw std::invalid_argument("invalid DV");
 
