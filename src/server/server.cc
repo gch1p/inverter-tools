@@ -132,7 +132,7 @@ std::shared_ptr<p18::response_type::BaseResponse> Server::executeCommand(p18::Co
         u64 diff = now - endExecutionTime_;
 
         if (diff < delay_)
-            usleep(delay_ - diff);
+            usleep((delay_ - diff) * 1000);
     }
 
     try {
