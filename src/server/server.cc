@@ -25,6 +25,8 @@ Server::Server(std::shared_ptr<voltronic::Device> device)
     : sock_(0)
     , port_(0)
     , cacheTimeout_(CACHE_TIMEOUT)
+    , delay_(0)
+    , endExecutionTime_(0)
     , verbose_(false)
     , device_(std::move(device)) {
     client_.setDevice(device_);
@@ -37,6 +39,10 @@ void Server::setVerbose(bool verbose) {
 
 void Server::setCacheTimeout(u64 timeout) {
     cacheTimeout_ = timeout;
+}
+
+void Server::setDelay(u64 delay) {
+    delay_ = delay;
 }
 
 Server::~Server() {
@@ -121,14 +127,25 @@ std::shared_ptr<p18::response_type::BaseResponse> Server::executeCommand(p18::Co
         cache_.erase(it);
     }
 
+    if (delay_ != 0 && endExecutionTime_ != 0) {
+        u64 now = voltronic::timestamp();
+        u64 diff = now - endExecutionTime_;
+
+        if (diff < delay_)
+            usleep(delay_ - diff);
+    }
+
     try {
         auto response = client_.execute(commandType, arguments);
+        endExecutionTime_ = voltronic::timestamp();
+
         CachedResponse cr {
-            .time = voltronic::timestamp(),
+            .time = endExecutionTime_,
             .arguments = arguments,
             .response = response
         };
         cache_[commandType] = cr;
+
         return response;
     }
     catch (voltronic::DeviceError& e) {

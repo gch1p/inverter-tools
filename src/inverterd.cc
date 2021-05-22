@@ -7,6 +7,7 @@
 #include <ios>
 #include <getopt.h>
 
+#include "numeric_types.h"
 #include "common.h"
 #include "voltronic/device.h"
 #include "voltronic/exceptions.h"
@@ -29,6 +30,7 @@ static void usage(const char* progname) {
               "    --device <DEVICE>:   'usb' (default), 'serial' or 'pseudo'\n"
               "    --timeout <TIMEOUT>: Device timeout in ms (default: " << voltronic::Device::TIMEOUT << ")\n"
               "    --cache-timeout <TIMEOUT>\n"
+              "    --delay <DELAY>:     Delay between commands in ms (default: 0)\n"
               "                         Cache validity time, in ms (default: " << server::Server::CACHE_TIMEOUT << ")\n"
               "    --verbose:           Be verbose\n"
               "\n";
@@ -53,8 +55,9 @@ static void usage(const char* progname) {
 
 int main(int argc, char *argv[]) {
     // common params
-    uint64_t timeout = voltronic::Device::TIMEOUT;
-    uint64_t cacheTimeout = server::Server::CACHE_TIMEOUT;
+    u64 timeout = voltronic::Device::TIMEOUT;
+    u64 cacheTimeout = server::Server::CACHE_TIMEOUT;
+    u64 delay = 0;
     bool verbose = false;
 
     // server params
@@ -80,6 +83,7 @@ int main(int argc, char *argv[]) {
             {"verbose", no_argument,       nullptr, LO_VERBOSE},
             {"timeout",          required_argument, nullptr, LO_TIMEOUT},
             {"cache-timeout",    required_argument, nullptr, LO_CACHE_TIMEOUT},
+            {"delay",            required_argument, nullptr, LO_DELAY},
             {"device",           required_argument, nullptr, LO_DEVICE},
             {"usb-vendor-id",    required_argument, nullptr, LO_USB_VENDOR_ID},
             {"usb-device-id",    required_argument, nullptr, LO_USB_DEVICE_ID},
@@ -137,6 +141,10 @@ int main(int argc, char *argv[]) {
 
                 case LO_CACHE_TIMEOUT:
                     cacheTimeout = std::stoull(arg);
+                    break;
+
+                case LO_DELAY:
+                    delay = std::stoull(arg);
                     break;
 
                 case LO_USB_VENDOR_ID:
@@ -266,6 +274,7 @@ int main(int argc, char *argv[]) {
 
     server::Server server(dev);
     server.setVerbose(verbose);
+    server.setDelay(delay);
     server.setCacheTimeout(cacheTimeout);
 
     server.start(host, port);

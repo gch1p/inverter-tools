@@ -18,6 +18,7 @@ enum {
     LO_RAW,
     LO_TIMEOUT,
     LO_CACHE_TIMEOUT,
+    LO_DELAY,
     LO_FORMAT,
     LO_DEVICE,
     LO_USB_VENDOR_ID,

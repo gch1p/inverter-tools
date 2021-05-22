@@ -42,6 +42,8 @@ private:
     std::shared_ptr<voltronic::Device> device_;
 
     u64 cacheTimeout_;
+    u64 delay_;
+    u64 endExecutionTime_;
     std::map<p18::CommandType, CachedResponse> cache_;
 
     std::mutex threads_mutex_;
@@ -59,6 +61,7 @@ public:
 
     void setVerbose(bool verbose);
     void setCacheTimeout(u64 timeout);
+    void setDelay(u64 delay);
     void start(std::string& host, int port);
 
     bool verbose() const { return verbose_; }
