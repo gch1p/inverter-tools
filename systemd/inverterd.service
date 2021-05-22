@@ -3,8 +3,9 @@ Description=inverterd
 After=network.target
 
 [Service]
+EnvironmentFile=/etc/default/inverterd
 Restart=on-failure
-ExecStart=/usr/local/bin/inverterd --host 0.0.0.0
+ExecStart=/usr/local/bin/inverterd $PARAMS
 
 [Install]
 WantedBy=multi-user.target
