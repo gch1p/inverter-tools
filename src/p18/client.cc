@@ -105,15 +105,10 @@ std::shared_ptr<response_type::BaseResponse> Client::execute(p18::CommandType co
             break;
     }
 
-    try {
-        if (!response->validate())
-            throw InvalidResponseError("validate() failed");
+    if (!response->validate())
+        throw InvalidResponseError("validate() failed");
 
-        response->unpack();
-    } catch (InvalidResponseError& e) {
-        return std::make_unique<response_type::ErrorResponse>(e.what());
-    }
-
+    response->unpack();
     return std::move(response);
 }
 
