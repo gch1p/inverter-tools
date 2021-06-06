@@ -457,6 +457,8 @@ int main(int argc, char *argv[]) {
                 break;
         }
 
+        dev->setFlags(voltronic::FLAG_READ_CRC | voltronic::FLAG_VERIFY_CRC);
+
         dev->setVerbose(verbose);
         dev->setTimeout(timeout);
 
