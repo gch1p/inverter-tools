@@ -8,7 +8,6 @@
 
 #include "response.h"
 #include "exceptions.h"
-#include "../logging.h"
 
 #define RETURN_TABLE(...)                                        \
     return std::shared_ptr<formatter::Table<VariantHolder>>(     \
@@ -26,6 +25,19 @@ namespace p18::response_type {
 typedef formatter::TableItem<VariantHolder> LINE;
 
 using formatter::Unit;
+
+
+/**
+ * Helpers
+ */
+std::ostream& operator<<(std::ostream& os, FieldLength fl) {
+    if (fl.min_ == fl.max_)
+        os << fl.min_;
+    else
+        os << "[" << fl.min_ << ", " << fl.max_ << "]";
+    return os;
+}
+
 
 /**
  * Base responses
@@ -58,7 +70,7 @@ size_t GetResponse::getDataSize() const {
     return rawSize_ - 5;
 }
 
-std::vector<std::string> GetResponse::getList(std::vector<size_t> itemLengths, int expectAtLeast) const {
+std::vector<std::string> GetResponse::getList(std::vector<FieldLength> itemLengths, int expectAtLeast) const {
     std::string buf(getData(), getDataSize());
     auto list = ::split(buf, ',');
 
@@ -77,7 +89,7 @@ std::vector<std::string> GetResponse::getList(std::vector<size_t> itemLengths, i
 
         // check each item's length
         for (int i = 0; i < list.size(); i++) {
-            if (list[i].size() != itemLengths[i]) {
+            if (!itemLengths[i].validate(list[i].size())) {
                 std::ostringstream error;
                 error << "while parsing " << demangle_type_name(typeid(*this).name());
                 error << ": item " << i << " is expected to be " << itemLengths[i] << " characters long, ";
@@ -635,7 +647,12 @@ void ParallelRatedInformation::unpack() {
         20, // CCCCCCCCCCCCCCCCCCCC
         1, // D
         3, // EEE
-        2, // FF
+
+        // FF
+        // note: protocol documentation says that the following field is 2 bytes long,
+        // but actual tests of the 6kw unit shows it can be 3 bytes long
+        FieldLength(2, 3),
+
         1 // G
     });
 

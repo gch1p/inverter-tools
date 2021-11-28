@@ -125,6 +125,26 @@ public:
 
 
 /**
+ * Some helpers
+ */
+class FieldLength {
+protected:
+    size_t min_;
+    size_t max_;
+
+public:
+    FieldLength(size_t n) : min_(n), max_(n) {}
+    FieldLength(size_t min, size_t max) : min_(min), max_(max) {}
+
+    [[nodiscard]] bool validate(size_t len) const {
+        return len >= min_ && len <= max_;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, FieldLength fl);
+};
+
+
+/**
  * Base responses
  */
 
@@ -145,7 +165,7 @@ class GetResponse : public BaseResponse {
 protected:
     const char* getData() const;
     size_t getDataSize() const;
-    std::vector<std::string> getList(std::vector<size_t> itemLengths, int expectAtLeast = -1) const;
+    std::vector<std::string> getList(std::vector<FieldLength> itemLengths, int expectAtLeast = -1) const;
 
 public:
     using BaseResponse::BaseResponse;
