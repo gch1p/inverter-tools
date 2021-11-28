@@ -58,22 +58,25 @@ size_t GetResponse::getDataSize() const {
     return rawSize_ - 5;
 }
 
-std::vector<std::string> GetResponse::getList(std::vector<size_t> itemLengths) const {
+std::vector<std::string> GetResponse::getList(std::vector<size_t> itemLengths, int expectAtLeast) const {
     std::string buf(getData(), getDataSize());
     auto list = ::split(buf, ',');
 
+    if (expectAtLeast == -1)
+        expectAtLeast = (int)itemLengths.size();
+
     if (!itemLengths.empty()) {
         // check list length
-        if (list.size() < itemLengths.size()) {
+        if (list.size() < expectAtLeast) {
             std::ostringstream error;
             error << "while parsing " << demangle_type_name(typeid(*this).name());
-            error << ": list is expected to be " << itemLengths.size() << " items long, ";
+            error << ": list is expected to be " << expectAtLeast << " items long, ";
             error << "got only " << list.size() << " items";
             throw ParseError(error.str());
         }
 
         // check each item's length
-        for (int i = 0; i < itemLengths.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             if (list[i].size() != itemLengths[i]) {
                 std::ostringstream error;
                 error << "while parsing " << demangle_type_name(typeid(*this).name());
@@ -682,13 +685,17 @@ void ParallelGeneralStatus::unpack() {
         4, // TTTT
         4, // UUUU
         1, // V
+           // FIXME: marked red in the docs
         1, // W
+           // FIXME: marked red in the docs
         1, // X
         1, // Y
         1, // Z
         1, // a
-        3, // bbb. Note: this one is marked in red in the doc. I don't know what that means.
-    });
+        3, // bbb. Note: this one is marked in red in the doc. Apparently it means
+           // that it may be missing on some models, see
+           // https://github.com/gch1p/inverter-tools/issues/1#issuecomment-981158688
+    }, 28);
 
     parallel_id_connection_status = static_cast<ParallelConnectionStatus>(stou(list[0]));
     work_mode = static_cast<p18::WorkingMode>(stou(list[1]));
@@ -718,7 +725,8 @@ void ParallelGeneralStatus::unpack() {
     battery_power_direction = static_cast<BatteryPowerDirection>(stou(list[25]));
     dc_ac_power_direction = static_cast<DC_AC_PowerDirection>(stou(list[26]));
     line_power_direction = static_cast<LinePowerDirection>(stou(list[27]));
-    max_temp = stou(list[28]);
+    if (list.size() >= 29)
+        max_temp = stou(list[28]);
 }
 
 formattable_ptr ParallelGeneralStatus::format(formatter::Format format) {

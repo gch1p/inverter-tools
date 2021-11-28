@@ -145,7 +145,7 @@ class GetResponse : public BaseResponse {
 protected:
     const char* getData() const;
     size_t getDataSize() const;
-    std::vector<std::string> getList(std::vector<size_t> itemLengths) const;
+    std::vector<std::string> getList(std::vector<size_t> itemLengths, int expectAtLeast = -1) const;
 
 public:
     using BaseResponse::BaseResponse;
