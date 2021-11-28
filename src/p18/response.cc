@@ -658,7 +658,7 @@ void ParallelRatedInformation::unpack() {
 
     parallel_id_connection_status = static_cast<ParallelConnectionStatus>(stou(list[0]));
     serial_number_valid_length = stou(list[1]);
-    serial_number = std::string(list[2], serial_number_valid_length);
+    serial_number = std::string(list[2], 0, serial_number_valid_length);
     charger_source_priority = static_cast<ChargerSourcePriority>(stou(list[3]));
     max_charging_current = stou(list[4]);
     max_ac_charging_current = stou(list[5]);
