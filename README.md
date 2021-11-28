@@ -40,6 +40,8 @@ for all possible options and commands.
   for querying inverterd server.
 - [inverter-bot](https://github.com/gch1p/inverter-bot) - Telegram bot that uses inverterd
   for querying data.
+- [inverter-http-proxy](https://github.com/gch1p/inverter-http-proxy) - HTTP
+  "frontend" for inverterd
 
 ## License
 
