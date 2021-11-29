@@ -20,9 +20,10 @@ is planned.
 - HIDAPI
 - libserialport
 
-## Supported devices
+## Tested devices
 
-As of time of writing, only InfiniSolar V 5KW was tested.
+- [InfiniSolar V 5KW](https://ekoproekt-energo.ru/infinisolar-v-5k-48)
+- [Crown Micro Elego 6KW](https://coollineenergy.com/product/crown-micro-elego-6kw-solar-hybrid-inverter/)
 
 ## Supported interfaces
 
