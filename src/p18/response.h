@@ -484,6 +484,8 @@ public:
     p18::BatteryPowerDirection battery_power_direction;
     p18::DC_AC_PowerDirection dc_ac_power_direction;
     p18::LinePowerDirection line_power_direction;
+
+    bool max_temp_present = false;
     unsigned max_temp;                       /* unit: C */
 };
 

@@ -742,12 +742,14 @@ void ParallelGeneralStatus::unpack() {
     battery_power_direction = static_cast<BatteryPowerDirection>(stou(list[25]));
     dc_ac_power_direction = static_cast<DC_AC_PowerDirection>(stou(list[26]));
     line_power_direction = static_cast<LinePowerDirection>(stou(list[27]));
-    if (list.size() >= 29)
+    if (list.size() >= 29) {
+        max_temp_present = true;
         max_temp = stou(list[28]);
+    }
 }
 
 formattable_ptr ParallelGeneralStatus::format(formatter::Format format) {
-    RETURN_TABLE({
+    auto table = new formatter::Table<VariantHolder>(format, {
         LINE("parallel_id_connection_status", "Parallel ID connection status", parallel_id_connection_status),
         LINE("mode", "Working mode", work_mode),
         LINE("fault_code", "Fault code", fault_code),
@@ -774,8 +776,15 @@ formattable_ptr ParallelGeneralStatus::format(formatter::Format format) {
         LINE("battery_power_direction", "Battery power direction", battery_power_direction),
         LINE("dc_ac_power_direction", "DC/AC power direction", dc_ac_power_direction),
         LINE("line_power_direction", "Line power direction", line_power_direction),
-        LINE("max_temp", "Max. temperature", max_temp),
-    })
+    });
+
+    if (max_temp_present) {
+        table->push(
+                LINE("max_temp", "Max. temperature", max_temp)
+        );
+    }
+
+    return std::shared_ptr<formatter::Table<VariantHolder>>(table);
 }
 
 

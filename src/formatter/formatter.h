@@ -127,6 +127,10 @@ public:
     explicit Table(Format format, std::vector<TableItem<T>> v)
         : Formattable(format), v_(v) {}
 
+    void push(TableItem<T> item) {
+        v_.push_back(item);
+    }
+
     std::ostream& writeSimpleTable(std::ostream& os) const override {
         for (const auto& item: v_) {
             os << item.key << " ";
