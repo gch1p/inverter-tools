@@ -20,6 +20,11 @@ is planned.
 - HIDAPI
 - libserialport
 
+## Using docker
+
+`docker build -t inverterd .`
+`docker run --rm --name inverterd --device /dev/ttyUSB0 inverterd --help`
+
 ## Tested devices
 
 - [InfiniSolar V 5KW](https://ekoproekt-energo.ru/infinisolar-v-5k-48)
