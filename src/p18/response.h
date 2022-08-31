@@ -292,7 +292,7 @@ public:
     unsigned max_ac_charging_current;         /* unit: A */
     unsigned max_charging_current;            /* unit: A */
     p18::InputVoltageRange input_voltage_range;
-    p18::OutputModelSetting output_source_priority;
+    p18::OutputSourcePriority output_source_priority;
     p18::ChargerSourcePriority charger_source_priority;
     unsigned parallel_max_num;
     p18::MachineType machine_type;

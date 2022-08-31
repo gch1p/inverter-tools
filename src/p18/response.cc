@@ -294,7 +294,7 @@ void RatedInformation::unpack() {
     max_ac_charging_current = stou(list[14]);
     max_charging_current = stou(list[15]);
     input_voltage_range = static_cast<InputVoltageRange>(stou(list[16]));
-    output_source_priority = static_cast<OutputModelSetting>(stou(list[17]));
+    output_source_priority = static_cast<OutputSourcePriority>(stou(list[17]));
     charger_source_priority = static_cast<ChargerSourcePriority>(stou(list[18]));
     parallel_max_num = stou(list[19]);
     machine_type = static_cast<MachineType>(stou(list[20]));
