@@ -8,6 +8,7 @@
 
 #include "response.h"
 #include "exceptions.h"
+#include "../logging.h"
 
 #define RETURN_TABLE(...)                                        \
     return std::shared_ptr<formatter::Table<VariantHolder>>(     \
@@ -89,6 +90,12 @@ std::vector<std::string> GetResponse::getList(std::vector<FieldLength> itemLengt
 
         // check each item's length
         for (int i = 0; i < list.size(); i++) {
+            if (i >= itemLengths.size()) {
+                myerr << "while parsing " << demangle_type_name(typeid(*this).name())
+                      << ": item " << i << " is not expected";
+                break;
+            }
+
             if (!itemLengths[i].validate(list[i].size())) {
                 std::ostringstream error;
                 error << "while parsing " << demangle_type_name(typeid(*this).name());
