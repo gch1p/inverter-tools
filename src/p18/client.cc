@@ -65,42 +65,42 @@ std::shared_ptr<response_type::BaseResponse> Client::execute(p18::CommandType co
         RESPONSE_CASE(YearGenerated)
         RESPONSE_CASE(MonthGenerated)
         RESPONSE_CASE(DayGenerated)
-        RESPONSE_CASE(SeriesNumber)
+        RESPONSE_CASE(SerialNumber)
         RESPONSE_CASE(CPUVersion)
         RESPONSE_CASE(RatedInformation)
         RESPONSE_CASE(GeneralStatus)
         RESPONSE_CASE(WorkingMode)
         RESPONSE_CASE(FaultsAndWarnings)
         RESPONSE_CASE(FlagsAndStatuses)
-        RESPONSE_CASE(Defaults)
-        RESPONSE_CASE(AllowedChargingCurrents)
-        RESPONSE_CASE(AllowedACChargingCurrents)
+        RESPONSE_CASE(RatedDefaults)
+        RESPONSE_CASE(AllowedChargeCurrents)
+        RESPONSE_CASE(AllowedACChargeCurrents)
         RESPONSE_CASE(ParallelRatedInformation)
         RESPONSE_CASE(ParallelGeneralStatus)
-        RESPONSE_CASE(ACChargingTimeBucket)
-        RESPONSE_CASE(ACLoadsSupplyTimeBucket)
+        RESPONSE_CASE(ACChargeTimeBucket)
+        RESPONSE_CASE(ACSupplyTimeBucket)
 
-        case CommandType::SetLoads:
+        case CommandType::SetACSupply:
         case CommandType::SetFlag:
         case CommandType::SetDefaults:
-        case CommandType::SetBatteryMaxChargingCurrent:
-        case CommandType::SetBatteryMaxACChargingCurrent:
+        case CommandType::SetBatteryMaxChargeCurrent:
+        case CommandType::SetBatteryMaxACChargeCurrent:
         case CommandType::SetACOutputFreq:
-        case CommandType::SetBatteryMaxChargingVoltage:
-        case CommandType::SetACOutputRatedVoltage:
+        case CommandType::SetBatteryMaxChargeVoltage:
+        case CommandType::SetACOutputVoltage:
         case CommandType::SetOutputSourcePriority:
-        case CommandType::SetBatteryChargingThresholds:
-        case CommandType::SetChargingSourcePriority:
+        case CommandType::SetBatteryChargeThresholds:
+        case CommandType::SetChargeSourcePriority:
         case CommandType::SetSolarPowerPriority:
         case CommandType::SetACInputVoltageRange:
         case CommandType::SetBatteryType:
-        case CommandType::SetOutputModel:
+        case CommandType::SetOutputMode:
         case CommandType::SetBatteryCutOffVoltage:
         case CommandType::SetSolarConfig:
         case CommandType::ClearGenerated:
         case CommandType::SetDateTime:
-        case CommandType::SetACChargingTimeBucket:
-        case CommandType::SetACLoadsSupplyTimeBucket:
+        case CommandType::SetACChargeTimeBucket:
+        case CommandType::SetACSupplyTimeBucket:
             response = MKRESPONSE(SetResponse);
             break;
     }
@@ -132,7 +132,7 @@ std::string Client::packArguments(p18::CommandType commandType, std::vector<std:
         case CommandType::SetSolarPowerPriority:
         case CommandType::SetACInputVoltageRange:
         case CommandType::SetBatteryType:
-        case CommandType::SetLoads:
+        case CommandType::SetACSupply:
             buf << arguments[0];
             break;
 
@@ -153,8 +153,8 @@ std::string Client::packArguments(p18::CommandType commandType, std::vector<std:
             buf << arguments[0];
             break;
 
-        case CommandType::SetBatteryMaxChargingCurrent:
-        case CommandType::SetBatteryMaxACChargingCurrent:
+        case CommandType::SetBatteryMaxChargeCurrent:
+        case CommandType::SetBatteryMaxACChargeCurrent:
             buf << arguments[0] << ",";
             buf << std::setw(3) << std::stoi(arguments[1]);
             break;
@@ -163,8 +163,8 @@ std::string Client::packArguments(p18::CommandType commandType, std::vector<std:
             buf << std::setw(2) << std::stoi(arguments[0]);
             break;
 
-        case CommandType::SetBatteryMaxChargingVoltage:
-        case CommandType::SetBatteryChargingThresholds: {
+        case CommandType::SetBatteryMaxChargeVoltage:
+        case CommandType::SetBatteryChargeThresholds: {
             for (int i = 0; i < 2; i++) {
                 double val = std::stod(arguments[i]);
                 buf << std::setw(3) << (int)round(val*10);
@@ -174,13 +174,13 @@ std::string Client::packArguments(p18::CommandType commandType, std::vector<std:
             break;
         }
 
-        case CommandType::SetACOutputRatedVoltage: {
+        case CommandType::SetACOutputVoltage: {
             buf << std::setw(4) << (std::stoi(arguments[0])*10);
             break;
         }
 
-        case CommandType::SetChargingSourcePriority:
-        case CommandType::SetOutputModel:
+        case CommandType::SetChargeSourcePriority:
+        case CommandType::SetOutputMode:
             buf << arguments[0] << "," << arguments[1];
             break;
 
@@ -210,8 +210,8 @@ std::string Client::packArguments(p18::CommandType commandType, std::vector<std:
             break;
         }
 
-        case CommandType::SetACChargingTimeBucket:
-        case CommandType::SetACLoadsSupplyTimeBucket:
+        case CommandType::SetACChargeTimeBucket:
+        case CommandType::SetACSupplyTimeBucket:
             for (int i = 0; i < 4; i++) {
                 buf << std::setw(2) << std::stoi(arguments[i]);
                 if (i == 1)

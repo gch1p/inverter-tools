@@ -24,41 +24,41 @@ const std::map<std::string, p18::CommandType> client_commands = {
     {"get-year-generated",               p18::CommandType::GetYearGenerated},
     {"get-month-generated",              p18::CommandType::GetMonthGenerated},
     {"get-day-generated",                p18::CommandType::GetDayGenerated},
-    {"get-series-number",                p18::CommandType::GetSeriesNumber},
+    {"get-serial-number",                p18::CommandType::GetSerialNumber},
     {"get-cpu-version",                  p18::CommandType::GetCPUVersion},
     {"get-rated",                        p18::CommandType::GetRatedInformation},
     {"get-status",                       p18::CommandType::GetGeneralStatus},
     {"get-mode",                         p18::CommandType::GetWorkingMode},
     {"get-errors",                       p18::CommandType::GetFaultsAndWarnings},
     {"get-flags",                        p18::CommandType::GetFlagsAndStatuses},
-    {"get-rated-defaults",               p18::CommandType::GetDefaults},
-    {"get-allowed-charging-currents",    p18::CommandType::GetAllowedChargingCurrents},
-    {"get-allowed-ac-charging-currents", p18::CommandType::GetAllowedACChargingCurrents},
+    {"get-rated-defaults",               p18::CommandType::GetRatedDefaults},
+    {"get-allowed-charge-currents",      p18::CommandType::GetAllowedChargeCurrents},
+    {"get-allowed-ac-charge-currents",   p18::CommandType::GetAllowedACChargeCurrents},
     {"get-p-rated",                      p18::CommandType::GetParallelRatedInformation},
     {"get-p-status",                     p18::CommandType::GetParallelGeneralStatus},
-    {"get-ac-charging-time",             p18::CommandType::GetACChargingTimeBucket},
-    {"get-ac-loads-supply-time",         p18::CommandType::GetACLoadsSupplyTimeBucket},
-    {"set-loads-supply",                 p18::CommandType::SetLoads},
+    {"get-ac-charge-time",               p18::CommandType::GetACChargeTimeBucket},
+    {"get-ac-supply-time",               p18::CommandType::GetACSupplyTimeBucket},
+    {"set-ac-supply",                    p18::CommandType::SetACSupply},
     {"set-flag",                         p18::CommandType::SetFlag},
     {"set-rated-defaults",               p18::CommandType::SetDefaults},
-    {"set-max-charging-current",         p18::CommandType::SetBatteryMaxChargingCurrent},
-    {"set-max-ac-charging-current",      p18::CommandType::SetBatteryMaxACChargingCurrent},
+    {"set-max-charge-current",           p18::CommandType::SetBatteryMaxChargeCurrent},
+    {"set-max-ac-charge-current",        p18::CommandType::SetBatteryMaxACChargeCurrent},
     {"set-ac-output-freq",               p18::CommandType::SetACOutputFreq},
-    {"set-max-charging-voltage",         p18::CommandType::SetBatteryMaxChargingVoltage},
-    {"set-ac-output-voltage",            p18::CommandType::SetACOutputRatedVoltage},
+    {"set-max-charge-voltage",           p18::CommandType::SetBatteryMaxChargeVoltage},
+    {"set-ac-output-voltage",            p18::CommandType::SetACOutputVoltage},
     {"set-output-source-priority",       p18::CommandType::SetOutputSourcePriority},
-    {"set-charging-thresholds",          p18::CommandType::SetBatteryChargingThresholds}, /* Battery re-charging and re-discharging voltage when utility is available */
-    {"set-charging-source-priority",     p18::CommandType::SetChargingSourcePriority},
+    {"set-charge-thresholds",            p18::CommandType::SetBatteryChargeThresholds}, /* Battery re-charge and re-discharge voltage when utility is available */
+    {"set-charge-source-priority",       p18::CommandType::SetChargeSourcePriority},
     {"set-solar-power-priority",         p18::CommandType::SetSolarPowerPriority},
     {"set-ac-input-voltage-range",       p18::CommandType::SetACInputVoltageRange},
     {"set-battery-type",                 p18::CommandType::SetBatteryType},
-    {"set-output-model",                 p18::CommandType::SetOutputModel},
-    {"set-battery-cut-off-voltage",      p18::CommandType::SetBatteryCutOffVoltage},
+    {"set-output-mode",                  p18::CommandType::SetOutputMode},
+    {"set-battery-cutoff-voltage",       p18::CommandType::SetBatteryCutOffVoltage},
     {"set-solar-configuration",          p18::CommandType::SetSolarConfig},
     {"clear-generated-data",             p18::CommandType::ClearGenerated},
     {"set-date-time",                    p18::CommandType::SetDateTime},
-    {"set-ac-charging-time",             p18::CommandType::SetACChargingTimeBucket},
-    {"set-ac-loads-supply-time",         p18::CommandType::SetACLoadsSupplyTimeBucket},
+    {"set-ac-charge-time",               p18::CommandType::SetACChargeTimeBucket},
+    {"set-ac-supply-time",               p18::CommandType::SetACSupplyTimeBucket},
 };
 
 static void validate_date_args(const std::string* ys, const std::string* ms, const std::string* ds) {
@@ -200,7 +200,7 @@ p18::CommandType validate_input(std::string& command,
             throw std::invalid_argument("invalid argument");
         break;
 
-    case p18::CommandType::SetLoads: {
+    case p18::CommandType::SetACSupply: {
         GET_ARGS(1);
         std::string &arg = arguments[0];
         if (arg != "0" && arg != "1")
@@ -229,8 +229,8 @@ p18::CommandType validate_input(std::string& command,
         break;
     }
 
-    case p18::CommandType::SetBatteryMaxChargingCurrent:
-    case p18::CommandType::SetBatteryMaxACChargingCurrent: {
+    case p18::CommandType::SetBatteryMaxChargeCurrent:
+    case p18::CommandType::SetBatteryMaxACChargeCurrent: {
         GET_ARGS(2);
 
         auto id = static_cast<unsigned>(std::stoul(arguments[0]));
@@ -254,7 +254,7 @@ p18::CommandType validate_input(std::string& command,
         break;
     }
 
-    case p18::CommandType::SetBatteryMaxChargingVoltage: {
+    case p18::CommandType::SetBatteryMaxChargeVoltage: {
         GET_ARGS(2);
 
         float cv = std::stof(arguments[0]);
@@ -269,13 +269,13 @@ p18::CommandType validate_input(std::string& command,
         break;
     }
 
-    case p18::CommandType::SetACOutputRatedVoltage: {
+    case p18::CommandType::SetACOutputVoltage: {
         GET_ARGS(1);
 
         auto v = static_cast<unsigned>(std::stoul(arguments[0]));
 
         bool matchFound = false;
-        for (const auto &item: p18::ac_output_rated_voltages) {
+        for (const auto &item: p18::ac_output_voltages) {
             if (v == item) {
                 matchFound = true;
                 break;
@@ -301,26 +301,26 @@ p18::CommandType validate_input(std::string& command,
         break;
     }
 
-    case p18::CommandType::SetBatteryChargingThresholds: {
+    case p18::CommandType::SetBatteryChargeThresholds: {
         GET_ARGS(2);
 
         float cv = std::stof(arguments[0]);
         float dv = std::stof(arguments[1]);
 
-        if (index_of(p18::bat_ac_recharging_voltages_12v, cv) == -1 &&
-            index_of(p18::bat_ac_recharging_voltages_24v, cv) == -1 &&
-            index_of(p18::bat_ac_recharging_voltages_48v, cv) == -1)
+        if (index_of(p18::bat_ac_recharge_voltages_12v, cv) == -1 &&
+            index_of(p18::bat_ac_recharge_voltages_24v, cv) == -1 &&
+            index_of(p18::bat_ac_recharge_voltages_48v, cv) == -1)
             throw std::invalid_argument("invalid CV");
 
-        if (index_of(p18::bat_ac_redischarging_voltages_12v, dv) == -1 &&
-            index_of(p18::bat_ac_redischarging_voltages_24v, dv) == -1 &&
-            index_of(p18::bat_ac_redischarging_voltages_48v, dv) == -1)
+        if (index_of(p18::bat_ac_redischarge_voltages_12v, dv) == -1 &&
+            index_of(p18::bat_ac_redischarge_voltages_24v, dv) == -1 &&
+            index_of(p18::bat_ac_redischarge_voltages_48v, dv) == -1)
             throw std::invalid_argument("invalid DV");
 
         break;
     }
 
-    case p18::CommandType::SetChargingSourcePriority: {
+    case p18::CommandType::SetChargeSourcePriority: {
         GET_ARGS(2);
 
         auto id = static_cast<unsigned>(std::stoul(arguments[0]));
@@ -370,14 +370,14 @@ p18::CommandType validate_input(std::string& command,
         break;
     }
 
-    case p18::CommandType::SetOutputModel: {
+    case p18::CommandType::SetOutputMode: {
         GET_ARGS(2);
 
         auto id = static_cast<unsigned>(std::stoul(arguments[0]));
         if (!p18::is_valid_parallel_id(id))
             throw std::invalid_argument("invalid id");
 
-        std::array<std::string, 5> allowed({"SM", "P", "P1", "P2", "P3"});
+        std::array<std::string, 5> allowed({"S", "P", "1", "2", "3"});
         long index = index_of(allowed, arguments[1]);
         if (index == -1)
             throw std::invalid_argument("invalid model");
@@ -414,8 +414,8 @@ p18::CommandType validate_input(std::string& command,
         break;
     }
 
-    case p18::CommandType::SetACChargingTimeBucket:
-    case p18::CommandType::SetACLoadsSupplyTimeBucket: {
+    case p18::CommandType::SetACChargeTimeBucket:
+    case p18::CommandType::SetACSupplyTimeBucket: {
         GET_ARGS(2);
 
         std::vector<std::string> start = split(arguments[0], ':');

@@ -32,7 +32,7 @@ typedef std::variant<
     std::string,
     p18::BatteryType,
     p18::BatteryPowerDirection,
-    p18::ChargerSourcePriority,
+    p18::ChargeSourcePriority,
     p18::DC_AC_PowerDirection,
     p18::InputVoltageRange,
     p18::LinePowerDirection,
@@ -40,7 +40,7 @@ typedef std::variant<
     p18::MPPTChargerStatus,
     p18::Topology,
     p18::OutputSourcePriority,
-    p18::OutputModelSetting,
+    p18::OutputMode,
     p18::ParallelConnectionStatus,
     p18::SolarPowerPriority,
     p18::WorkingMode,
@@ -62,7 +62,7 @@ public:
     VariantHolder(std::string v) : v_(v) {}
     VariantHolder(p18::BatteryType v) : v_(v) {}
     VariantHolder(p18::BatteryPowerDirection v) : v_(v) {}
-    VariantHolder(p18::ChargerSourcePriority v) : v_(v) {}
+    VariantHolder(p18::ChargeSourcePriority v) : v_(v) {}
     VariantHolder(p18::DC_AC_PowerDirection v) : v_(v) {}
     VariantHolder(p18::InputVoltageRange v) : v_(v) {}
     VariantHolder(p18::LinePowerDirection v) : v_(v) {}
@@ -70,7 +70,7 @@ public:
     VariantHolder(p18::MPPTChargerStatus v) : v_(v) {}
     VariantHolder(p18::Topology v) : v_(v) {}
     VariantHolder(p18::OutputSourcePriority v) : v_(v) {}
-    VariantHolder(p18::OutputModelSetting v) : v_(v) {}
+    VariantHolder(p18::OutputMode v) : v_(v) {}
     VariantHolder(p18::ParallelConnectionStatus v) : v_(v) {}
     VariantHolder(p18::SolarPowerPriority v) : v_(v) {}
     VariantHolder(p18::WorkingMode v) : v_(v) {}
@@ -89,7 +89,7 @@ public:
         bool isEnum =
             std::holds_alternative<p18::BatteryType>(v_) ||
             std::holds_alternative<p18::BatteryPowerDirection>(v_) ||
-            std::holds_alternative<p18::ChargerSourcePriority>(v_) ||
+            std::holds_alternative<p18::ChargeSourcePriority>(v_) ||
             std::holds_alternative<p18::DC_AC_PowerDirection>(v_) ||
             std::holds_alternative<p18::InputVoltageRange>(v_) ||
             std::holds_alternative<p18::LinePowerDirection>(v_) ||
@@ -97,7 +97,7 @@ public:
             std::holds_alternative<p18::MPPTChargerStatus>(v_) ||
             std::holds_alternative<p18::Topology>(v_) ||
             std::holds_alternative<p18::OutputSourcePriority>(v_) ||
-            std::holds_alternative<p18::OutputModelSetting>(v_) ||
+            std::holds_alternative<p18::OutputMode>(v_) ||
             std::holds_alternative<p18::ParallelConnectionStatus>(v_) ||
             std::holds_alternative<p18::SolarPowerPriority>(v_) ||
             std::holds_alternative<p18::WorkingMode>(v_) ||
@@ -249,7 +249,7 @@ public:
     using TotalGenerated::TotalGenerated;
 };
 
-class SeriesNumber : public GetResponse {
+class SerialNumber : public GetResponse {
 public:
     using GetResponse::GetResponse;
     void unpack() override;
@@ -289,15 +289,15 @@ public:
     unsigned battery_bulk_voltage;            /* unit: 0.1V */
     unsigned battery_float_voltage;           /* unit: 0.1V */
     p18::BatteryType battery_type;
-    unsigned max_ac_charging_current;         /* unit: A */
-    unsigned max_charging_current;            /* unit: A */
+    unsigned max_ac_charge_current;           /* unit: A */
+    unsigned max_charge_current;              /* unit: A */
     p18::InputVoltageRange input_voltage_range;
     p18::OutputSourcePriority output_source_priority;
-    p18::ChargerSourcePriority charger_source_priority;
+    p18::ChargeSourcePriority charge_source_priority;
     unsigned parallel_max_num;
     p18::MachineType machine_type;
     p18::Topology topology;
-    p18::OutputModelSetting output_model_setting;
+    p18::OutputMode output_mode;
     p18::SolarPowerPriority solar_power_priority;
     std::string mppt;
 };
@@ -319,7 +319,7 @@ public:
     unsigned battery_voltage_scc;       /* unit: 0.1V */
     unsigned battery_voltage_scc2;      /* unit: 0.1V */
     unsigned battery_discharge_current; /* unit: A */
-    unsigned battery_charging_current;  /* unit: A */
+    unsigned battery_charge_current;    /* unit: A */
     unsigned battery_capacity;          /* unit: % */
     unsigned inverter_heat_sink_temp;   /* unit: C */
     unsigned mppt1_charger_temp;        /* unit: C */
@@ -389,7 +389,7 @@ public:
     char reserved = '0';
 };
 
-class Defaults : public GetResponse {
+class RatedDefaults : public GetResponse {
 public:
     using GetResponse::GetResponse;
     void unpack() override;
@@ -403,14 +403,14 @@ public:
     unsigned charging_bulk_voltage = 0;
     unsigned battery_recharge_voltage = 0;
     unsigned battery_redischarge_voltage = 0;
-    unsigned max_charging_current = 0;
-    unsigned max_ac_charging_current = 0;
+    unsigned max_charge_current = 0;
+    unsigned max_ac_charge_current = 0;
     p18::BatteryType battery_type = static_cast<BatteryType>(0);
     p18::OutputSourcePriority output_source_priority = static_cast<OutputSourcePriority>(0);
-    p18::ChargerSourcePriority charger_source_priority = static_cast<ChargerSourcePriority>(0);
+    p18::ChargeSourcePriority charge_source_priority = static_cast<ChargeSourcePriority>(0);
     p18::SolarPowerPriority solar_power_priority = static_cast<SolarPowerPriority>(0);
     p18::MachineType machine_type = static_cast<MachineType>(0);
-    p18::OutputModelSetting output_model_setting = static_cast<OutputModelSetting>(0);
+    p18::OutputMode output_mode = static_cast<OutputMode>(0);
     bool flag_buzzer = false;
     bool flag_overload_restart = false;
     bool flag_over_temp_restart = false;
@@ -421,7 +421,7 @@ public:
     bool flag_lcd_escape_to_default_page_after_1min_timeout = false;
 };
 
-class AllowedChargingCurrents : public GetResponse {
+class AllowedChargeCurrents : public GetResponse {
 public:
     using GetResponse::GetResponse;
     void unpack() override;
@@ -430,9 +430,9 @@ public:
     std::vector<unsigned> amps;
 };
 
-class AllowedACChargingCurrents : public AllowedChargingCurrents {
+class AllowedACChargeCurrents : public AllowedChargeCurrents {
 public:
-    using AllowedChargingCurrents::AllowedChargingCurrents;
+    using AllowedChargeCurrents::AllowedChargeCurrents;
 };
 
 class ParallelRatedInformation : public GetResponse {
@@ -441,13 +441,13 @@ public:
     void unpack() override;
     formattable_ptr format(formatter::Format format) override;
 
-    p18::ParallelConnectionStatus parallel_id_connection_status = static_cast<ParallelConnectionStatus>(0);
+    p18::ParallelConnectionStatus parallel_connection_status = static_cast<ParallelConnectionStatus>(0);
     unsigned serial_number_valid_length = 0;
     std::string serial_number;
-    p18::ChargerSourcePriority charger_source_priority = static_cast<ChargerSourcePriority>(0);
-    unsigned max_ac_charging_current = 0; // unit: A
-    unsigned max_charging_current = 0;    // unit: A
-    p18::OutputModelSetting output_model_setting = static_cast<OutputModelSetting>(0);
+    p18::ChargeSourcePriority charge_source_priority = static_cast<ChargeSourcePriority>(0);
+    unsigned max_ac_charge_current = 0; // unit: A
+    unsigned max_charge_current = 0;    // unit: A
+    p18::OutputMode output_mode = static_cast<OutputMode>(0);
 };
 
 class ParallelGeneralStatus : public GetResponse {
@@ -456,7 +456,7 @@ public:
     void unpack() override;
     formattable_ptr format(formatter::Format format) override;
 
-    p18::ParallelConnectionStatus parallel_id_connection_status;
+    p18::ParallelConnectionStatus parallel_connection_status;
     p18::WorkingMode work_mode;
     unsigned fault_code;
     unsigned grid_voltage;                   /* unit: 0.1V */
@@ -471,8 +471,8 @@ public:
     unsigned total_output_load_percent;      /* unit: % */
     unsigned battery_voltage;                /* unit: 0.1V */
     unsigned battery_discharge_current;      /* unit: A */
-    unsigned battery_charging_current;       /* unit: A */
-    unsigned total_battery_charging_current; /* unit: A */
+    unsigned battery_charge_current;         /* unit: A */
+    unsigned total_battery_charge_current;   /* unit: A */
     unsigned battery_capacity;               /* unit: % */
     unsigned pv1_input_power;                /* unit: W */
     unsigned pv2_input_power;                /* unit: W */
@@ -489,7 +489,7 @@ public:
     unsigned max_temp;                       /* unit: C */
 };
 
-class ACChargingTimeBucket : public GetResponse {
+class ACChargeTimeBucket : public GetResponse {
 public:
     using GetResponse::GetResponse;
     void unpack() override;
@@ -501,9 +501,9 @@ public:
     unsigned short end_m = 0;
 };
 
-class ACLoadsSupplyTimeBucket : public ACChargingTimeBucket {
+class ACSupplyTimeBucket : public ACChargeTimeBucket {
 public:
-    using ACChargingTimeBucket::ACChargingTimeBucket;
+    using ACChargeTimeBucket::ACChargeTimeBucket;
 };
 
 } // namespace p18

@@ -8,60 +8,60 @@
 namespace p18 {
 
 const std::map<CommandType, std::string> raw_commands = {
-    {CommandType::GetProtocolID,                "PI"},
-    {CommandType::GetCurrentTime,               "T"},
-    {CommandType::GetTotalGenerated,            "ET"},
-    {CommandType::GetYearGenerated,             "EY"},
-    {CommandType::GetMonthGenerated,            "EM"},
-    {CommandType::GetDayGenerated,              "ED"},
-    {CommandType::GetSeriesNumber,              "ID"},
-    {CommandType::GetCPUVersion,                "VFW"},
-    {CommandType::GetRatedInformation,          "PIRI"},
-    {CommandType::GetGeneralStatus,             "GS"},
-    {CommandType::GetWorkingMode,               "MOD"},
-    {CommandType::GetFaultsAndWarnings,         "FWS"},
-    {CommandType::GetFlagsAndStatuses,          "FLAG"},
-    {CommandType::GetDefaults,                  "DI"},
-    {CommandType::GetAllowedChargingCurrents,   "MCHGCR"},
-    {CommandType::GetAllowedACChargingCurrents, "MUCHGCR"},
-    {CommandType::GetParallelRatedInformation,  "PRI"},
-    {CommandType::GetParallelGeneralStatus,     "PGS"},
-    {CommandType::GetACChargingTimeBucket,      "ACCT"},
-    {CommandType::GetACLoadsSupplyTimeBucket,   "ACLT"},
-    {CommandType::SetLoads,                     "LON"},
-    {CommandType::SetFlag,                      "P"},
-    {CommandType::SetDefaults,                  "PF"},
-    {CommandType::SetBatteryMaxChargingCurrent,   "MCHGC"},
-    {CommandType::SetBatteryMaxACChargingCurrent, "MUCHGC"},
+    {CommandType::GetProtocolID,               "PI"},
+    {CommandType::GetCurrentTime,              "T"},
+    {CommandType::GetTotalGenerated,           "ET"},
+    {CommandType::GetYearGenerated,            "EY"},
+    {CommandType::GetMonthGenerated,           "EM"},
+    {CommandType::GetDayGenerated,             "ED"},
+    {CommandType::GetSerialNumber,             "ID"},
+    {CommandType::GetCPUVersion,               "VFW"},
+    {CommandType::GetRatedInformation,         "PIRI"},
+    {CommandType::GetGeneralStatus,            "GS"},
+    {CommandType::GetWorkingMode,              "MOD"},
+    {CommandType::GetFaultsAndWarnings,        "FWS"},
+    {CommandType::GetFlagsAndStatuses,         "FLAG"},
+    {CommandType::GetRatedDefaults,            "DI"},
+    {CommandType::GetAllowedChargeCurrents,    "MCHGCR"},
+    {CommandType::GetAllowedACChargeCurrents,  "MUCHGCR"},
+    {CommandType::GetParallelRatedInformation, "PRI"},
+    {CommandType::GetParallelGeneralStatus,    "PGS"},
+    {CommandType::GetACChargeTimeBucket,       "ACCT"},
+    {CommandType::GetACSupplyTimeBucket,       "ACLT"},
+    {CommandType::SetACSupply,                 "LON"},
+    {CommandType::SetFlag,                     "P"},
+    {CommandType::SetDefaults,                 "PF"},
+    {CommandType::SetBatteryMaxChargeCurrent,  "MCHGC"},
+    {CommandType::SetBatteryMaxACChargeCurrent, "MUCHGC"},
     /* The protocol documentation defines two commands, "F50" and "F60",
        but it's identical as if there were just one "F" command with an argument. */
-    {CommandType::SetACOutputFreq,              "F"},
-    {CommandType::SetBatteryMaxChargingVoltage, "MCHGV"},
-    {CommandType::SetACOutputRatedVoltage,      "V"},
-    {CommandType::SetOutputSourcePriority,      "POP"},
-    {CommandType::SetBatteryChargingThresholds, "BUCD"},
-    {CommandType::SetChargingSourcePriority,    "PCP"},
-    {CommandType::SetSolarPowerPriority,        "PSP"},
-    {CommandType::SetACInputVoltageRange,       "PGR"},
-    {CommandType::SetBatteryType,               "PBT"},
-    {CommandType::SetOutputModel,               "POPM"},
-    {CommandType::SetBatteryCutOffVoltage,      "PSDV"},
-    {CommandType::SetSolarConfig,               "ID"},
-    {CommandType::ClearGenerated,               "CLE"},
-    {CommandType::SetDateTime,                  "DAT"},
-    {CommandType::SetACChargingTimeBucket,      "ACCT"},
-    {CommandType::SetACLoadsSupplyTimeBucket,   "ACLT"},
+    {CommandType::SetACOutputFreq,            "F"},
+    {CommandType::SetBatteryMaxChargeVoltage, "MCHGV"},
+    {CommandType::SetACOutputVoltage,         "V"},
+    {CommandType::SetOutputSourcePriority,    "POP"},
+    {CommandType::SetBatteryChargeThresholds, "BUCD"},
+    {CommandType::SetChargeSourcePriority,    "PCP"},
+    {CommandType::SetSolarPowerPriority,      "PSP"},
+    {CommandType::SetACInputVoltageRange,     "PGR"},
+    {CommandType::SetBatteryType,             "PBT"},
+    {CommandType::SetOutputMode,              "POPM"},
+    {CommandType::SetBatteryCutOffVoltage,    "PSDV"},
+    {CommandType::SetSolarConfig,             "ID"},
+    {CommandType::ClearGenerated,             "CLE"},
+    {CommandType::SetDateTime,                "DAT"},
+    {CommandType::SetACChargeTimeBucket,      "ACCT"},
+    {CommandType::SetACSupplyTimeBucket,      "ACLT"},
 };
 
-const std::array<int, 5> ac_output_rated_voltages = {202, 208, 220, 230, 240};
+const std::array<int, 5> ac_output_voltages = {202, 208, 220, 230, 240};
 
-const std::array<float, 8> bat_ac_recharging_voltages_12v = {11, 11.3, 11.5, 11.8, 12, 12.3, 12.5, 12.8};
-const std::array<float, 8> bat_ac_recharging_voltages_24v = {22, 22.5, 23, 23.5, 24, 24.5, 25, 25.5};
-const std::array<float, 8> bat_ac_recharging_voltages_48v = {44, 45, 46, 47, 48, 49, 50, 51};
+const std::array<float, 8> bat_ac_recharge_voltages_12v = {11, 11.3, 11.5, 11.8, 12, 12.3, 12.5, 12.8};
+const std::array<float, 8> bat_ac_recharge_voltages_24v = {22, 22.5, 23, 23.5, 24, 24.5, 25, 25.5};
+const std::array<float, 8> bat_ac_recharge_voltages_48v = {44, 45, 46, 47, 48, 49, 50, 51};
 
-const std::array<float, 12> bat_ac_redischarging_voltages_12v = {0, 12, 12.3, 12.5, 12.8, 13, 13.3, 13.5, 13.8, 14, 14.3, 14.5};
-const std::array<float, 12> bat_ac_redischarging_voltages_24v = {0, 24, 24.5, 25, 25.5, 26, 26.5, 27, 27.5, 28, 28.5, 29};
-const std::array<float, 12> bat_ac_redischarging_voltages_48v = {0, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58};
+const std::array<float, 12> bat_ac_redischarge_voltages_12v = {0, 12, 12.3, 12.5, 12.8, 13, 13.3, 13.5, 13.8, 14, 14.3, 14.5};
+const std::array<float, 12> bat_ac_redischarge_voltages_24v = {0, 24, 24.5, 25, 25.5, 26, 26.5, 27, 27.5, 28, 28.5, 29};
+const std::array<float, 12> bat_ac_redischarge_voltages_48v = {0, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58};
 
 const std::map<int, std::string> fault_codes = {
     {1, "Fan is locked"},
@@ -133,13 +133,13 @@ ENUM_STR(OutputSourcePriority) {
     ENUM_STR_DEFAULT;
 }
 
-ENUM_STR(ChargerSourcePriority) {
+ENUM_STR(ChargeSourcePriority) {
     switch (val) {
-        case ChargerSourcePriority::SolarFirst:
+        case ChargeSourcePriority::SolarFirst:
             return os << "Solar-First";
-        case ChargerSourcePriority::SolarAndUtility:
+        case ChargeSourcePriority::SolarAndUtility:
             return os << "Solar-and-Utility";
-        case ChargerSourcePriority::SolarOnly:
+        case ChargeSourcePriority::SolarOnly:
             return os << "Solar-only";
     }
     ENUM_STR_DEFAULT;
@@ -161,18 +161,18 @@ ENUM_STR(Topology) {
     ENUM_STR_DEFAULT;
 }
 
-ENUM_STR(OutputModelSetting) {
+ENUM_STR(OutputMode) {
     switch (val) {
-        case OutputModelSetting::SingleModule:
-            return os << "Single module";
-        case OutputModelSetting::ParallelOutput:
+        case OutputMode::SingleOutput:
+            return os << "Single output";
+        case OutputMode::ParallelOutput:
             return os << "Parallel output";
-        case OutputModelSetting::Phase1OfThreePhaseOutput:
-            return os << "Phase 1 of three phase output";
-        case OutputModelSetting::Phase2OfThreePhaseOutput:
-            return os << "Phase 2 of three phase output";
-        case OutputModelSetting::Phase3OfThreePhaseOutput:
-            return os << "Phase 3 of three phase";
+        case OutputMode::Phase_1_of_3:
+            return os << "Phase 1 of 3-phase output";
+        case OutputMode::Phase_2_of_3:
+            return os << "Phase 2 of 3-phase output";
+        case OutputMode::Phase_3_of_3:
+            return os << "Phase 3 of 3-phase";
     }
     ENUM_STR_DEFAULT;
 }

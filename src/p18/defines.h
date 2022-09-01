@@ -13,15 +13,15 @@ namespace p18 {
 
 extern const std::map<CommandType, std::string> raw_commands;
 
-extern const std::array<int, 5> ac_output_rated_voltages;
+extern const std::array<int, 5> ac_output_voltages;
 
-extern const std::array<float, 8> bat_ac_recharging_voltages_12v;
-extern const std::array<float, 8> bat_ac_recharging_voltages_24v;
-extern const std::array<float, 8> bat_ac_recharging_voltages_48v;
+extern const std::array<float, 8> bat_ac_recharge_voltages_12v;
+extern const std::array<float, 8> bat_ac_recharge_voltages_24v;
+extern const std::array<float, 8> bat_ac_recharge_voltages_48v;
 
-extern const std::array<float, 12> bat_ac_redischarging_voltages_12v;
-extern const std::array<float, 12> bat_ac_redischarging_voltages_24v;
-extern const std::array<float, 12> bat_ac_redischarging_voltages_48v;
+extern const std::array<float, 12> bat_ac_redischarge_voltages_12v;
+extern const std::array<float, 12> bat_ac_redischarge_voltages_24v;
+extern const std::array<float, 12> bat_ac_redischarge_voltages_48v;
 
 extern const std::map<int, std::string> fault_codes;
 

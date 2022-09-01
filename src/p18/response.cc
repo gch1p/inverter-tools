@@ -222,7 +222,7 @@ formattable_ptr TotalGenerated::format(formatter::Format format) {
 }
 
 
-void SeriesNumber::unpack() {
+void SerialNumber::unpack() {
     auto data = getData();
 
     std::string buf(data, 2);
@@ -231,9 +231,9 @@ void SeriesNumber::unpack() {
     id = std::string(data+2, len);
 }
 
-formattable_ptr SeriesNumber::format(formatter::Format format) {
+formattable_ptr SerialNumber::format(formatter::Format format) {
     RETURN_TABLE({
-        LINE("sn", "Series number", id)
+        LINE("sn", "Serial number", id)
     });
 }
 
@@ -298,15 +298,15 @@ void RatedInformation::unpack() {
     battery_bulk_voltage = stou(list[11]);
     battery_float_voltage = stou(list[12]);
     battery_type = static_cast<BatteryType>(stou(list[13]));
-    max_ac_charging_current = stou(list[14]);
-    max_charging_current = stou(list[15]);
+    max_ac_charge_current = stou(list[14]);
+    max_charge_current = stou(list[15]);
     input_voltage_range = static_cast<InputVoltageRange>(stou(list[16]));
     output_source_priority = static_cast<OutputSourcePriority>(stou(list[17]));
-    charger_source_priority = static_cast<ChargerSourcePriority>(stou(list[18]));
+    charge_source_priority = static_cast<ChargeSourcePriority>(stou(list[18]));
     parallel_max_num = stou(list[19]);
     machine_type = static_cast<MachineType>(stou(list[20]));
     topology = static_cast<Topology>(stou(list[21]));
-    output_model_setting = static_cast<OutputModelSetting>(stou(list[22]));
+    output_mode = static_cast<OutputMode>(stou(list[22]));
     solar_power_priority = static_cast<SolarPowerPriority>(stou(list[23]));
     mppt = list[24];
 }
@@ -327,15 +327,15 @@ formattable_ptr RatedInformation::format(formatter::Format format) {
         LINE("battery_bulk_voltage", "Battery bulk voltage", battery_bulk_voltage / 10.0, Unit::V),
         LINE("battery_float_voltage", "Battery float voltage", battery_float_voltage / 10.0, Unit::V),
         LINE("battery_type", "Battery type", battery_type),
-        LINE("max_charging_current", "Max charging current", max_charging_current, Unit::A),
-        LINE("max_ac_charging_current", "Max AC charging current", max_ac_charging_current, Unit::A),
+        LINE("max_charge_current", "Max charge current", max_charge_current, Unit::A),
+        LINE("max_ac_charge_current", "Max AC charge current", max_ac_charge_current, Unit::A),
         LINE("input_voltage_range", "Input voltage range", input_voltage_range),
         LINE("output_source_priority", "Output source priority", output_source_priority),
-        LINE("charge_source_priority", "Charge source priority", charger_source_priority),
+        LINE("charge_source_priority", "Charge source priority", charge_source_priority),
         LINE("parallel_max_num", "Parallel max num", parallel_max_num),
         LINE("machine_type", "Machine type", machine_type),
         LINE("topology", "Topology", topology),
-        LINE("output_model_setting", "Output model setting", output_model_setting),
+        LINE("output_mode", "Output mode", output_mode),
         LINE("solar_power_priority", "Solar power priority", solar_power_priority),
         LINE("mppt", "MPPT string", mppt)
     });
@@ -385,7 +385,7 @@ void GeneralStatus::unpack() {
     battery_voltage_scc = stou(list[8]);
     battery_voltage_scc2 = stou(list[9]);
     battery_discharge_current = stou(list[10]);
-    battery_charging_current = stou(list[11]);
+    battery_charge_current = stou(list[11]);
     battery_capacity = stou(list[12]);
     inverter_heat_sink_temp = stou(list[13]);
     mppt1_charger_temp = stou(list[14]);
@@ -416,8 +416,8 @@ formattable_ptr GeneralStatus::format(formatter::Format format) {
         LINE("battery_voltage", "Battery voltage", battery_voltage / 10.0, Unit::V),
         LINE("battery_voltage_scc", "Battery voltage from SCC", battery_voltage_scc / 10.0, Unit::V),
         LINE("battery_voltage_scc2", "Battery voltage from SCC2", battery_voltage_scc2 / 10.0, Unit::V),
-        LINE("battery_discharging_current", "Battery discharging current", battery_discharge_current, Unit::A),
-        LINE("battery_charging_current", "Battery charging current", battery_charging_current, Unit::A),
+        LINE("battery_discharge_current", "Battery discharge current", battery_discharge_current, Unit::A),
+        LINE("battery_charge_current", "Battery charge current", battery_charge_current, Unit::A),
         LINE("battery_capacity", "Battery capacity", battery_capacity, Unit::Percentage),
         LINE("inverter_heat_sink_temp", "Inverter heat sink temperature", inverter_heat_sink_temp, Unit::Celsius),
         LINE("mppt1_charger_temp", "MPPT1 charger temperature", mppt1_charger_temp, Unit::Celsius),
@@ -546,7 +546,7 @@ formattable_ptr FlagsAndStatuses::format(formatter::Format format) {
 }
 
 
-void Defaults::unpack() {
+void RatedDefaults::unpack() {
     auto list = getList({
         4, // AAAA
         3, // BBB
@@ -582,14 +582,14 @@ void Defaults::unpack() {
     charging_bulk_voltage = stou(list[5]);
     battery_recharge_voltage = stou(list[6]);
     battery_redischarge_voltage = stou(list[7]);
-    max_charging_current = stou(list[8]);
-    max_ac_charging_current = stou(list[9]);
+    max_charge_current = stou(list[8]);
+    max_ac_charge_current = stou(list[9]);
     battery_type = static_cast<BatteryType>(stou(list[10]));
     output_source_priority = static_cast<OutputSourcePriority>(stou(list[11]));
-    charger_source_priority = static_cast<ChargerSourcePriority>(stou(list[12]));
+    charge_source_priority = static_cast<ChargeSourcePriority>(stou(list[12]));
     solar_power_priority = static_cast<SolarPowerPriority>(stou(list[13]));
     machine_type = static_cast<MachineType>(stou(list[14]));
-    output_model_setting = static_cast<OutputModelSetting>(stou(list[15]));
+    output_mode = static_cast<OutputMode>(stou(list[15]));
     flag_buzzer = stou(list[16]) > 0;
     flag_overload_restart = stou(list[17]) > 0;
     flag_over_temp_restart = stou(list[18]) > 0;
@@ -600,7 +600,7 @@ void Defaults::unpack() {
     flag_lcd_escape_to_default_page_after_1min_timeout = stou(list[23]) > 0;
 }
 
-formattable_ptr Defaults::format(formatter::Format format) {
+formattable_ptr RatedDefaults::format(formatter::Format format) {
     RETURN_TABLE({
         LINE("ac_output_voltage", "AC output voltage", ac_output_voltage / 10.0, Unit::V),
         LINE("ac_output_freq", "AC output frequency", ac_output_freq / 10.0, Unit::Hz),
@@ -608,16 +608,16 @@ formattable_ptr Defaults::format(formatter::Format format) {
         LINE("battery_under_voltage", "Battery under voltage", battery_under_voltage / 10.0, Unit::V),
         LINE("battery_bulk_voltage", "Charging bulk voltage", charging_bulk_voltage / 10.0, Unit::V),
         LINE("battery_float_voltage",  "Charging float voltage", charging_float_voltage / 10.0, Unit::V),
-        LINE("battery_recharging_voltage", "Battery re-charging voltage", battery_recharge_voltage / 10.0, Unit::V),
-        LINE("battery_redischarging_voltage", "Battery re-discharging voltage", battery_redischarge_voltage / 10.0, Unit::V),
-        LINE("max_charging_current", "Max charging current", max_charging_current, Unit::A),
-        LINE("max_ac_charging_current", "Max AC charging current", max_ac_charging_current, Unit::A),
+        LINE("battery_recharge_voltage", "Battery re-charge voltage", battery_recharge_voltage / 10.0, Unit::V),
+        LINE("battery_redischarge_voltage", "Battery re-discharge voltage", battery_redischarge_voltage / 10.0, Unit::V),
+        LINE("max_charge_current", "Max charge current", max_charge_current, Unit::A),
+        LINE("max_ac_charge_current", "Max AC charge current", max_ac_charge_current, Unit::A),
         LINE("battery_type", "Battery type", battery_type),
         LINE("output_source_priority", "Output source priority", output_source_priority),
-        LINE("charger_source_priority", "Charger source priority", charger_source_priority),
+        LINE("charge_source_priority", "Charge source priority", charge_source_priority),
         LINE("solar_power_priority", "Solar power priority", solar_power_priority),
         LINE("machine_type", "Machine type", machine_type),
-        LINE("output_model_setting", "Output model setting", output_model_setting),
+        LINE("output_mode", "Output mode", output_mode),
         LINE("buzzer_flag", "Buzzer flag", flag_buzzer),
         LINE("overload_bypass_flag", "Overload bypass function flag", flag_overload_bypass),
         LINE("escape_to_default_screen_after_1min_timeout_flag", "Escape to default screen after 1min timeout flag", flag_lcd_escape_to_default_page_after_1min_timeout),
@@ -629,14 +629,14 @@ formattable_ptr Defaults::format(formatter::Format format) {
     })
 }
 
-void AllowedChargingCurrents::unpack() {
+void AllowedChargeCurrents::unpack() {
     auto list = getList({});
     for (const std::string& i: list) {
         amps.emplace_back(stou(i));
     }
 }
 
-formattable_ptr AllowedChargingCurrents::format(formatter::Format format) {
+formattable_ptr AllowedChargeCurrents::format(formatter::Format format) {
     std::vector<formatter::ListItem<VariantHolder>> v;
     for (const auto& n: amps)
         v.emplace_back(n);
@@ -663,23 +663,23 @@ void ParallelRatedInformation::unpack() {
         1 // G
     });
 
-    parallel_id_connection_status = static_cast<ParallelConnectionStatus>(stou(list[0]));
+    parallel_connection_status = static_cast<ParallelConnectionStatus>(stou(list[0]));
     serial_number_valid_length = stou(list[1]);
     serial_number = std::string(list[2], 0, serial_number_valid_length);
-    charger_source_priority = static_cast<ChargerSourcePriority>(stou(list[3]));
-    max_charging_current = stou(list[4]);
-    max_ac_charging_current = stou(list[5]);
-    output_model_setting = static_cast<OutputModelSetting>(stou(list[6]));
+    charge_source_priority = static_cast<ChargeSourcePriority>(stou(list[3]));
+    max_charge_current = stou(list[4]);
+    max_ac_charge_current = stou(list[5]);
+    output_mode = static_cast<OutputMode>(stou(list[6]));
 }
 
 formattable_ptr ParallelRatedInformation::format(formatter::Format format) {
     RETURN_TABLE({
-        LINE("parallel_id_connection_status", "Parallel ID connection status", parallel_id_connection_status),
+        LINE("parallel_connection_status", "Parallel connection status", parallel_connection_status),
         LINE("serial_number", "Serial number", serial_number),
-        LINE("charger_source_priority", "Charger source priority", charger_source_priority),
-        LINE("max_charging_current", "Max charging current", max_charging_current, Unit::A),
-        LINE("max_ac_charging_current", "Max AC charging current", max_ac_charging_current, Unit::A),
-        LINE("output_model_setting", "Output model setting", output_model_setting),
+        LINE("charge_source_priority", "Charge source priority", charge_source_priority),
+        LINE("max_charge_current", "Max charge current", max_charge_current, Unit::A),
+        LINE("max_ac_charge_current", "Max AC charge current", max_ac_charge_current, Unit::A),
+        LINE("output_mode", "Output mode", output_mode),
     })
 }
 
@@ -721,7 +721,7 @@ void ParallelGeneralStatus::unpack() {
            // https://github.com/gch1p/inverter-tools/issues/1#issuecomment-981158688
     }, 28);
 
-    parallel_id_connection_status = static_cast<ParallelConnectionStatus>(stou(list[0]));
+    parallel_connection_status = static_cast<ParallelConnectionStatus>(stou(list[0]));
     work_mode = static_cast<p18::WorkingMode>(stou(list[1]));
     fault_code = stou(list[2]);
     grid_voltage = stou(list[3]);
@@ -736,8 +736,8 @@ void ParallelGeneralStatus::unpack() {
     total_output_load_percent = stou(list[12]);
     battery_voltage = stou(list[13]);
     battery_discharge_current = stou(list[14]);
-    battery_charging_current = stou(list[15]);
-    total_battery_charging_current = stou(list[16]);
+    battery_charge_current = stou(list[15]);
+    total_battery_charge_current = stou(list[16]);
     battery_capacity = stou(list[17]);
     pv1_input_power = stou(list[18]);
     pv2_input_power = stou(list[19]);
@@ -757,7 +757,7 @@ void ParallelGeneralStatus::unpack() {
 
 formattable_ptr ParallelGeneralStatus::format(formatter::Format format) {
     auto table = new formatter::Table<VariantHolder>(format, {
-        LINE("parallel_id_connection_status", "Parallel ID connection status", parallel_id_connection_status),
+        LINE("parallel_connection_status", "Parallel connection status", parallel_connection_status),
         LINE("mode", "Working mode", work_mode),
         LINE("fault_code", "Fault code", fault_code),
         LINE("grid_voltage", "Grid voltage", grid_voltage / 10.0, Unit::V),
@@ -772,11 +772,13 @@ formattable_ptr ParallelGeneralStatus::format(formatter::Format format) {
         LINE("total_output_load_percent", "Total output load percent", total_output_load_percent, Unit::Percentage),
         LINE("battery_voltage", "Battery voltage", battery_voltage / 10.0, Unit::V),
         LINE("battery_discharge_current", "Battery discharge current", battery_discharge_current, Unit::A),
-        LINE("battery_charging_current", "Battery charging current", battery_charging_current, Unit::A),
-        LINE("pv1_input_power", "PV1 Input power", pv1_input_power, Unit::Wh),
-        LINE("pv2_input_power", "PV2 Input power", pv2_input_power, Unit::Wh),
-        LINE("pv1_input_voltage", "PV1 Input voltage", pv1_input_voltage / 10.0, Unit::V),
-        LINE("pv2_input_voltage", "PV2 Input voltage", pv2_input_voltage / 10.0, Unit::V),
+        LINE("battery_charge_current", "Battery charge current", battery_charge_current, Unit::A),
+        LINE("total_battery_charge_current", "Total battery charge current", total_battery_charge_current, Unit::A),
+        LINE("battery_capacity", "Battery capacity", battery_capacity, Unit::Percentage),
+        LINE("pv1_input_power", "PV1 input power", pv1_input_power, Unit::Wh),
+        LINE("pv2_input_power", "PV2 input power", pv2_input_power, Unit::Wh),
+        LINE("pv1_input_voltage", "PV1 input voltage", pv1_input_voltage / 10.0, Unit::V),
+        LINE("pv2_input_voltage", "PV2 input voltage", pv2_input_voltage / 10.0, Unit::V),
         LINE("mppt1_charger_status", "MPPT1 charger status", mppt1_charger_status),
         LINE("mppt2_charger_status", "MPPT2 charger status", mppt2_charger_status),
         LINE("load_connected", "Load connection", load_connected),
@@ -787,7 +789,7 @@ formattable_ptr ParallelGeneralStatus::format(formatter::Format format) {
 
     if (max_temp_present) {
         table->push(
-                LINE("max_temp", "Max. temperature", max_temp)
+            LINE("max_temp", "Max. temperature", max_temp)
         );
     }
 
@@ -795,7 +797,7 @@ formattable_ptr ParallelGeneralStatus::format(formatter::Format format) {
 }
 
 
-void ACChargingTimeBucket::unpack() {
+void ACChargeTimeBucket::unpack() {
     auto list = getList({4 /* AAAA */, 4 /* BBBB */});
 
     start_h = stouh(list[0].substr(0, 2));
@@ -812,7 +814,7 @@ static inline std::string get_time(unsigned short h, unsigned short m) {
     return buf.str();
 }
 
-formattable_ptr ACChargingTimeBucket::format(formatter::Format format) {
+formattable_ptr ACChargeTimeBucket::format(formatter::Format format) {
     RETURN_TABLE({
         LINE("start_time", "Start time", get_time(start_h, start_m)),
         LINE("end_time", "End time", get_time(end_h, end_m)),

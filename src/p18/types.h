@@ -17,41 +17,41 @@ enum class CommandType {
     GetYearGenerated,
     GetMonthGenerated,
     GetDayGenerated,
-    GetSeriesNumber,
+    GetSerialNumber,
     GetCPUVersion,
     GetRatedInformation,
     GetGeneralStatus,
     GetWorkingMode,
     GetFaultsAndWarnings,
     GetFlagsAndStatuses,
-    GetDefaults,
-    GetAllowedChargingCurrents,
-    GetAllowedACChargingCurrents,
+    GetRatedDefaults,
+    GetAllowedChargeCurrents,
+    GetAllowedACChargeCurrents,
     GetParallelRatedInformation,
     GetParallelGeneralStatus,
-    GetACChargingTimeBucket,
-    GetACLoadsSupplyTimeBucket,
-    SetLoads = 100,
+    GetACChargeTimeBucket,
+    GetACSupplyTimeBucket,
+    SetACSupply = 100,
     SetFlag,
     SetDefaults,
-    SetBatteryMaxChargingCurrent,
-    SetBatteryMaxACChargingCurrent,
+    SetBatteryMaxChargeCurrent,
+    SetBatteryMaxACChargeCurrent,
     SetACOutputFreq,
-    SetBatteryMaxChargingVoltage,
-    SetACOutputRatedVoltage,
+    SetBatteryMaxChargeVoltage,
+    SetACOutputVoltage,
     SetOutputSourcePriority,
-    SetBatteryChargingThresholds, /* Battery re-charging and re-discharing voltage when utility is available */
-    SetChargingSourcePriority,
+    SetBatteryChargeThresholds, /* Battery re-charge and re-discharge voltage when utility is available */
+    SetChargeSourcePriority,
     SetSolarPowerPriority,
     SetACInputVoltageRange,
     SetBatteryType,
-    SetOutputModel,
+    SetOutputMode,
     SetBatteryCutOffVoltage,
     SetSolarConfig,
     ClearGenerated,
     SetDateTime,
-    SetACChargingTimeBucket,
-    SetACLoadsSupplyTimeBucket,
+    SetACChargeTimeBucket,
+    SetACSupplyTimeBucket,
 };
 
 enum class BatteryType {
@@ -73,12 +73,12 @@ enum class OutputSourcePriority {
 };
 ENUM_STR(OutputSourcePriority);
 
-enum class ChargerSourcePriority {
+enum class ChargeSourcePriority {
     SolarFirst      = 0,
     SolarAndUtility = 1,
     SolarOnly       = 2,
 };
-ENUM_STR(ChargerSourcePriority);
+ENUM_STR(ChargeSourcePriority);
 
 enum class MachineType {
     OffGridTie = 0,
@@ -92,14 +92,14 @@ enum class Topology {
 };
 ENUM_STR(Topology);
 
-enum class OutputModelSetting {
-    SingleModule             = 0,
-    ParallelOutput           = 1,
-    Phase1OfThreePhaseOutput = 2,
-    Phase2OfThreePhaseOutput = 3,
-    Phase3OfThreePhaseOutput = 4,
+enum class OutputMode {
+    SingleOutput   = 0,
+    ParallelOutput = 1,
+    Phase_1_of_3   = 2,
+    Phase_2_of_3   = 3,
+    Phase_3_of_3   = 4,
 };
-ENUM_STR(OutputModelSetting);
+ENUM_STR(OutputMode);
 
 enum class SolarPowerPriority {
     BatteryLoadUtility = 0,
