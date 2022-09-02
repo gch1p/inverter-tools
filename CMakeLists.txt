@@ -97,10 +97,3 @@ target_link_libraries(testserial ${LIBSERIALPORT_LIBRARY})
 target_include_directories(testserial PRIVATE
         ${LIBSERIALPORT_INCLUDE_DIR}
         third_party/hexdump)
-
-
-# inverterd
-#add_executable(inverterd
-#        src/inverterd.cc)
-#target_link_libraries(inverterd ${HIDAPI_LIBRARY} ${LIBSERIALPORT_LIBRARY} m)
-# TODO install
