@@ -72,7 +72,10 @@ public:
     static u16 GET_HID_REPORT_SIZE(size_t size);
 
     USBDevice(u16 vendorId, u16 productId);
+    explicit USBDevice(const std::string& path);
     ~USBDevice();
+
+    static inline void init();
 
     size_t read(u8* buf, size_t bufSize) override;
     size_t write(const u8* data, size_t dataSize) override;

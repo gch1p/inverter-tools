@@ -42,7 +42,10 @@ static void usage(const char* progname) {
     std::cout << std::hex << std::setfill('0') <<
               "USB device options:\n"
               "    --usb-vendor-id <ID>: Vendor ID (default: " << std::setw(4) << voltronic::USBDevice::VENDOR_ID << ")\n"
-              "    --usb-device-id <ID>: Device ID (default: " << std::setw(4) << voltronic::USBDevice::PRODUCT_ID << ")\n";
+              "    --usb-device-id <ID>: Device ID (default: " << std::setw(4) << voltronic::USBDevice::PRODUCT_ID << ")\n"
+              "\n"
+              "    Alternatively, you can specify device path (e.g., /dev/hidraw0):\n"
+              "    --usb-path <PATH>: Device path\n";
     std::cout.flags(f);
 
     std::cout << "\n"
@@ -73,6 +76,7 @@ int main(int argc, char *argv[]) {
 
     unsigned short usbVendorId = voltronic::USBDevice::VENDOR_ID;
     unsigned short usbDeviceId = voltronic::USBDevice::PRODUCT_ID;
+    std::string usbDevicePath {};
 
     std::string serialDeviceName(voltronic::SerialDevice::DEVICE_NAME);
     voltronic::SerialBaudRate serialBaudRate = voltronic::SerialDevice::BAUD_RATE;
@@ -92,6 +96,7 @@ int main(int argc, char *argv[]) {
             {"device-error-limit", required_argument, nullptr, LO_DEVICE_ERROR_LIMIT},
             {"usb-vendor-id",      required_argument, nullptr, LO_USB_VENDOR_ID},
             {"usb-device-id",      required_argument, nullptr, LO_USB_DEVICE_ID},
+            {"usb-path",           required_argument, nullptr, LO_USB_PATH},
             {"serial-name",        required_argument, nullptr, LO_SERIAL_NAME},
             {"serial-baud-rate",   required_argument, nullptr, LO_SERIAL_BAUD_RATE},
             {"serial-data-bits",   required_argument, nullptr, LO_SERIAL_DATA_BITS},
@@ -176,6 +181,10 @@ int main(int argc, char *argv[]) {
                     }
                     break;
 
+                case LO_USB_PATH:
+                    usbDevicePath = arg;
+                    break;
+
                 case LO_SERIAL_NAME:
                     serialDeviceName = arg;
                     break;
@@ -243,7 +252,12 @@ int main(int argc, char *argv[]) {
     try {
         switch (deviceType) {
             case DeviceType::USB:
-                dev = std::shared_ptr<voltronic::Device>(new voltronic::USBDevice(usbVendorId, usbDeviceId));
+                if (usbDevicePath.empty()) {
+                    dev = std::shared_ptr<voltronic::Device>(new voltronic::USBDevice(usbVendorId,
+                                                                                      usbDeviceId));
+                } else {
+                    dev = std::shared_ptr<voltronic::Device>(new voltronic::USBDevice(usbDevicePath));
+                }
                 break;
 
             case DeviceType::Pseudo:

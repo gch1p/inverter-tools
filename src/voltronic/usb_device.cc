@@ -12,12 +12,22 @@
 namespace voltronic {
 
 USBDevice::USBDevice(u16 vendorId, u16 productId) {
-    if (hid_init() != 0)
-        throw DeviceError("hidapi initialization failure");
-
+    init();
     device_ = hid_open(vendorId, productId, nullptr);
     if (!device_)
         throw DeviceError("failed to create hidapi device");
+}
+
+USBDevice::USBDevice(const std::string& path) {
+    init();
+    device_ = hid_open_path(path.c_str());
+    if (!device_)
+        throw DeviceError("failed to create hidapi device");
+}
+
+void USBDevice::init() {
+    if (hid_init() != 0)
+        throw DeviceError("hidapi initialization failure");
 }
 
 USBDevice::~USBDevice() {
