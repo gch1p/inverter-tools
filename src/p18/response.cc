@@ -271,7 +271,7 @@ void RatedInformation::unpack() {
         3, // LLL
         3, // MMM
         1, // N
-        2, // OO
+        FieldLength(2, 3), // OO
         3, // PPP
         1, // O
         1, // R
